@@ -38,7 +38,7 @@ public class MainCommand extends MetaCommand {
 
     @SubCommand("set")
     @Permission("lpmetaplus.command.set")
-    @CommandFlags({@Flag(flag = "silent")})
+    @CommandFlags({@Flag(longFlag = "silent", flag = "s")})
     public void onSet(@NotNull CommandSender sender, @NotNull @Suggestion("meta_types") String type,
                       @Suggestion("any_count") int count, @NotNull @Suggestion("loaded_user_names") String target,
                       @NotNull Flags flags) {
@@ -48,13 +48,13 @@ public class MainCommand extends MetaCommand {
                     (key, editor) -> editor.set(key, count),
                     (meta) -> metaMessages().set().send(sender, buildPlaceholders(target, meta, count)));
 
-            operation.execute(context, flags.hasFlag("silent"));
+            operation.execute(context, flags.hasFlag("s"));
         });
     }
 
     @SubCommand("give")
     @Permission("lpmetaplus.command.give")
-    @CommandFlags({@Flag(flag = "silent")})
+    @CommandFlags({@Flag(longFlag = "silent", flag = "s")})
     public void onGive(@NotNull CommandSender sender, @NotNull @Suggestion("meta_types") String type,
                        @Suggestion("any_count") int count, @NotNull @Suggestion("loaded_user_names") String target,
                        @NotNull Flags flags) {
@@ -64,13 +64,13 @@ public class MainCommand extends MetaCommand {
                     (key, editor) -> editor.give(key, count),
                     (meta) -> metaMessages().given().send(sender, buildPlaceholders(target, meta, count)));
 
-            operation.execute(context, flags.hasFlag("silent"));
+            operation.execute(context, flags.hasFlag("s"));
         });
     }
 
     @SubCommand("take")
     @Permission("lpmetaplus.command.take")
-    @CommandFlags({@Flag(flag = "silent")})
+    @CommandFlags({@Flag(longFlag = "silent", flag = "s")})
     public void onTake(@NotNull CommandSender sender, @NotNull @Suggestion("meta_types") String type,
                        @Suggestion("any_count") int count, @NotNull @Suggestion("loaded_user_names") String target,
                        @NotNull Flags flags) {
@@ -80,7 +80,7 @@ public class MainCommand extends MetaCommand {
                     (key, editor) -> editor.take(key, count),
                     (meta) -> metaMessages().taken().send(sender, buildPlaceholders(target, meta, count)));
 
-            operation.execute(context, flags.hasFlag("silent"));
+            operation.execute(context, flags.hasFlag("s"));
         });
     }
 

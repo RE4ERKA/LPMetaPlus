@@ -114,7 +114,7 @@ public final class MetaSession implements AutoCloseable {
         return userManager.saveUser(user);
     }
 
-    private int zeroOrGreaterParse(String value) {
+    private int zeroOrGreaterParse(@NotNull String value) {
         final int i = Integer.parseInt(value);
         return Math.max(i, 0);
     }
