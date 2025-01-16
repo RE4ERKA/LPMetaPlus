@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id 'org.checkerframework' version '0.6.48'
+}
+
+group = 'me.re4erka'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        name = 'jitpack'
+        url = 'https://jitpack.io/'
+    }
+    maven {
+        name = 'alpine'
+        url = 'https://lib.alpn.cloud/alpine-public/'
+    }
+    maven {
+        name = 'triumphteam'
+        url = 'https://repo.triumphteam.dev/snapshots/'
+    }
+    maven {
+        name = 'helpchat'
+        url = 'https://repo.extendedclip.com/releases/'
+    }
+}
+
+dependencies {
+    // Spigot 1.16.5
+    compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+
+    // Lombok  
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.32'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
+
+    // ConfigLib
+    implementation 'dev.tomwmth:configlib-spigot:4.5.0'
+
+    // TriumphCMDs
+    implementation 'dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT'
+
+    // LuckPerms
+    compileOnly 'net.luckperms:api:5.4'
+
+    // PlaceholderAPI
+    compileOnly 'me.clip:placeholderapi:2.11.6'
+}
+
+logger.lifecycle("Building ${project.name} ${project.version} by RE4ERKA")

@@ -1,0 +1,9 @@
+name: LPMetaPlus
+version: '1.0'
+main: me.re4erka.lpmetaplus.LPMetaPlus
+api-version: '1.16'
+authors: [ RE4ERKA ]
+description: Enhances the meta for LuckPerms.
+website: t.me/re4erka
+depend: [ LuckPerms ]
+softdepend: [ PlaceholderAPI ]
