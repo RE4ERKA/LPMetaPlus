@@ -1,6 +1,7 @@
 package me.re4erka.lpmetaplus.util;
 
 import lombok.experimental.UtilityClass;
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
@@ -40,6 +41,13 @@ public final class Formatter {
         }
 
         return result.toString();
+    }
+
+    @NotNull
+    public String strip(@NotNull String input) {
+        return ChatColor.stripColor(
+                format(input)
+        );
     }
 
     private boolean isColorCode(char c) {

@@ -5,6 +5,8 @@ import me.re4erka.lpmetaplus.LPMetaPlus;
 import me.re4erka.lpmetaplus.Messages;
 import me.re4erka.lpmetaplus.configuration.type.CustomMeta;
 import me.re4erka.lpmetaplus.message.placeholder.Placeholders;
+import me.re4erka.lpmetaplus.util.UnsignedInts;
+import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -20,6 +22,15 @@ public abstract class MetaCommand extends BaseCommand {
     protected MetaCommand(@NotNull LPMetaPlus lpMetaPlus, @NotNull String command, @NotNull List<String> alias) {
         super(command, alias);
         this.lpMetaPlus = lpMetaPlus;
+    }
+
+    protected void ifNotUnsigned(@NotNull CommandSender sender, int count, @NotNull Runnable action) {
+        if (UnsignedInts.isNot(count)) {
+            metaMessages().unsignedNotSupported().send(sender);
+            return;
+        }
+
+        action.run();
     }
 
     @NotNull

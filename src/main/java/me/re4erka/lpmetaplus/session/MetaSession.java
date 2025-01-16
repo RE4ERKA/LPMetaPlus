@@ -14,6 +14,7 @@ import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.MetaNode;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -45,7 +46,7 @@ public final class MetaSession implements AutoCloseable {
     }
 
     public int get(@NotNull Key key) {
-        return Integer.parseUnsignedInt(
+        return zeroOrGreaterParse(
                 getAsString(key)
         );
     }
@@ -113,6 +114,11 @@ public final class MetaSession implements AutoCloseable {
         return userManager.saveUser(user);
     }
 
+    private int zeroOrGreaterParse(String value) {
+        final int i = Integer.parseInt(value);
+        return Math.max(i, 0);
+    }
+
     private RuntimeException throwIfMetaNotFound(@NotNull Key key) {
         lpMetaPlus.logError("When trying to find meta for a user, it was not found. "
                 + "This meta may have been unset/cleared from the 'default' group, "
@@ -130,22 +136,22 @@ public final class MetaSession implements AutoCloseable {
             this.silent = silent;
         }
 
-        public void set(@NotNull Key key, int count) {
+        public void set(@NotNull Key key, @Range(from = 0, to = Integer.MAX_VALUE) int count) {
             remove(key);
-            addNode(buildMetaNode(key, Integer.toUnsignedString(count)));
+            addNode(buildMetaNode(key, zeroOrGreaterToString(count)));
             addAction(buildMetaAction(MetaAction.Type.SET, key, count));
         }
 
-        public void give(@NotNull Key key, int count) {
+        public void give(@NotNull Key key, @Range(from = 0, to = Integer.MAX_VALUE) int count) {
             removeThen(key, previousCount -> {
-                addNode(buildMetaNode(key, Integer.toUnsignedString(previousCount + count)));
+                addNode(buildMetaNode(key, zeroOrGreaterToString(previousCount + count)));
                 addAction(buildMetaAction(MetaAction.Type.GIVE, key, count));
             });
         }
 
-        public void take(@NotNull Key key, int count) {
+        public void take(@NotNull Key key, @Range(from = 0, to = Integer.MAX_VALUE) int count) {
             removeThen(key, previousCount -> {
-                addNode(buildMetaNode(key, Integer.toUnsignedString(previousCount - count)));
+                addNode(buildMetaNode(key, zeroOrGreaterToString(previousCount - count)));
                 addAction(buildMetaAction(MetaAction.Type.TAKE, key, count));
             });
         }
@@ -194,6 +200,11 @@ public final class MetaSession implements AutoCloseable {
 
         private void addAction(@NotNull MetaAction action) {
             actions.add(action);
+        }
+
+        @NotNull
+        private String zeroOrGreaterToString(int i) {
+            return i < 0 ? "0" : Integer.toString(i);
         }
     }
 }

@@ -42,12 +42,14 @@ public class MainCommand extends MetaCommand {
     public void onSet(@NotNull CommandSender sender, @NotNull @Suggestion("meta_types") String type,
                       @Suggestion("any_count") int count, @NotNull @Suggestion("loaded_user_names") String target,
                       @NotNull Flags flags) {
-        final MetaOperationContext context = MetaOperationContext.of(sender, type, target);
-        final MetaOperation operation = MetaOperationFactory.createEditable(lpMetaPlus,
-                (key, editor) -> editor.set(key, count),
-                (meta) -> metaMessages().set().send(sender, buildPlaceholders(target, meta, count)));
+        ifNotUnsigned(sender, count, () -> {
+            final MetaOperationContext context = MetaOperationContext.of(sender, type, target);
+            final MetaOperation operation = MetaOperationFactory.createEditable(lpMetaPlus,
+                    (key, editor) -> editor.set(key, count),
+                    (meta) -> metaMessages().set().send(sender, buildPlaceholders(target, meta, count)));
 
-        operation.execute(context, flags.hasFlag("silent"));
+            operation.execute(context, flags.hasFlag("silent"));
+        });
     }
 
     @SubCommand("give")
@@ -56,12 +58,14 @@ public class MainCommand extends MetaCommand {
     public void onGive(@NotNull CommandSender sender, @NotNull @Suggestion("meta_types") String type,
                        @Suggestion("any_count") int count, @NotNull @Suggestion("loaded_user_names") String target,
                        @NotNull Flags flags) {
-        final MetaOperationContext context = MetaOperationContext.of(sender, type, target);
-        final MetaOperation operation = MetaOperationFactory.createEditable(lpMetaPlus,
-                (key, editor) -> editor.give(key, count),
-                (meta) -> metaMessages().given().send(sender, buildPlaceholders(target, meta, count)));
+        ifNotUnsigned(sender, count, () -> {
+            final MetaOperationContext context = MetaOperationContext.of(sender, type, target);
+            final MetaOperation operation = MetaOperationFactory.createEditable(lpMetaPlus,
+                    (key, editor) -> editor.give(key, count),
+                    (meta) -> metaMessages().given().send(sender, buildPlaceholders(target, meta, count)));
 
-        operation.execute(context, flags.hasFlag("silent"));
+            operation.execute(context, flags.hasFlag("silent"));
+        });
     }
 
     @SubCommand("take")
@@ -70,12 +74,14 @@ public class MainCommand extends MetaCommand {
     public void onTake(@NotNull CommandSender sender, @NotNull @Suggestion("meta_types") String type,
                        @Suggestion("any_count") int count, @NotNull @Suggestion("loaded_user_names") String target,
                        @NotNull Flags flags) {
-        final MetaOperationContext context = MetaOperationContext.of(sender, type, target);
-        final MetaOperation operation = MetaOperationFactory.createEditable(lpMetaPlus,
-                (key, editor) -> editor.take(key, count),
-                (meta) -> metaMessages().taken().send(sender, buildPlaceholders(target, meta, count)));
+        ifNotUnsigned(sender, count, () -> {
+            final MetaOperationContext context = MetaOperationContext.of(sender, type, target);
+            final MetaOperation operation = MetaOperationFactory.createEditable(lpMetaPlus,
+                    (key, editor) -> editor.take(key, count),
+                    (meta) -> metaMessages().taken().send(sender, buildPlaceholders(target, meta, count)));
 
-        operation.execute(context, flags.hasFlag("silent"));
+            operation.execute(context, flags.hasFlag("silent"));
+        });
     }
 
     @SubCommand("reload")

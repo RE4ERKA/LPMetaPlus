@@ -3,6 +3,7 @@ package me.re4erka.lpmetaplus.message;
 import me.re4erka.lpmetaplus.message.placeholder.Placeholders;
 import me.re4erka.lpmetaplus.util.Formatter;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +38,11 @@ public final class Message {
     }
 
     private void send(@NotNull CommandSender sender, @NotNull String text) {
-        sender.sendMessage(Formatter.format(text));
+        sender.sendMessage(isConsoleSender(sender) ? Formatter.strip(text) : Formatter.format(text));
+    }
+
+    private boolean isConsoleSender(@NotNull CommandSender sender) {
+        return Bukkit.getConsoleSender() == sender;
     }
 
     @NotNull

@@ -21,7 +21,7 @@ public abstract class LuckPermsProviderManager {
     protected LuckPermsProviderManager(@NotNull LPMetaPlus lpMetaPlus) {
         this.lpMetaPlus = lpMetaPlus;
 
-        throwIfClassNotFound();
+        throwIfLuckPermsProviderClassNotFound();
         this.luckPerms = LuckPermsProvider.get();
 
         this.userManager = luckPerms.getUserManager();
@@ -30,7 +30,7 @@ public abstract class LuckPermsProviderManager {
         this.actionLogger = luckPerms.getActionLogger();
     }
 
-    private void throwIfClassNotFound() {
+    private void throwIfLuckPermsProviderClassNotFound() {
         try {
             Class.forName("net.luckperms.api.LuckPermsProvider");
         } catch (ClassNotFoundException exception) {

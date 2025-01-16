@@ -22,10 +22,11 @@ public class MetaAction {
     private final Instant timestamp = Instant.now();
 
     private static final CharSequence SPACE = " ";
+    private static final String META_PREFIX = "meta";
 
     @NotNull
     public String toDescription() {
-        return String.join(SPACE, type.action, key.toLowerCase(), Integer.toUnsignedString(count));
+        return String.join(SPACE, META_PREFIX, type.action, key.toString(), Integer.toUnsignedString(count));
     }
 
     @Getter

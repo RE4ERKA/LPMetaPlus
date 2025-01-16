@@ -27,6 +27,7 @@ public class LPMetaPlusAPI {
         return plugin.getMetaManager().getUser(player);
     }
 
+    @NotNull
     public CompletableFuture<MetaSession> openSession(@NotNull String username) {
         return plugin.getMetaManager().findUser(username);
     }

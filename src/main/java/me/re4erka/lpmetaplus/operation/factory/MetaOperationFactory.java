@@ -23,7 +23,7 @@ public final class MetaOperationFactory {
     }
 
     public static EditableMetaOperation createEditable(@NotNull LPMetaPlus lpMetaPlus,
-                                                       @NotNull BiConsumer<Key,  MetaSession.Editor> editable,
+                                                       @NotNull BiConsumer<Key, MetaSession.Editor> editable,
                                                        @NotNull Consumer<CustomMeta> thenAction) {
         return new EditableMetaOperation(lpMetaPlus, editable, thenAction);
     }
