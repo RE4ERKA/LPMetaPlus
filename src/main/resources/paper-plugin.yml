@@ -1,5 +1,5 @@
 name: LPMetaPlus
-version: '1.0'
+version: '1.1'
 main: me.re4erka.lpmetaplus.LPMetaPlus
 api-version: '1.19'
 authors: [ RE4ERKA ]
@@ -13,6 +13,10 @@ dependencies:
       required: true
       join-classpath: true
     PlaceholderAPI:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    PlayerPoints:
       load: BEFORE
       required: false
       join-classpath: true

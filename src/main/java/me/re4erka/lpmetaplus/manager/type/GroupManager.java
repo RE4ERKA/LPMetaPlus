@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 
 public class GroupManager extends LuckPermsProviderManager {
 
-    public static final String CONTEXT_KEY = "meta-plus";
-
     public GroupManager(@NotNull LPMetaPlus lpMetaPlus) {
         super(lpMetaPlus);
     }
@@ -28,9 +26,9 @@ public class GroupManager extends LuckPermsProviderManager {
         lpMetaPlus.logInfo("Setting default metadata for group 'default'...");
         final Stopwatch stopwatch = Stopwatch.createStarted();
 
-        groupManager.loadGroup("default")
+        groupManager.loadGroup(DEFAULT_GROUP_NAME)
                 .thenAccept(optionalGroup -> {
-                    final Group group = optionalGroup.orElseThrow(this::throwIfGroupNotFound);
+                    final Group group = optionalGroup.orElseThrow(this::throwGroupNotFound);
                     loadDefaultGroupValues(group, metas.types());
                     clearRemovedMetadata(group, metas.names());
 
@@ -70,7 +68,7 @@ public class GroupManager extends LuckPermsProviderManager {
     }
 
     @NotNull
-    private RuntimeException throwIfGroupNotFound() {
+    private RuntimeException throwGroupNotFound() {
         return new IllegalStateException("Group 'default' cannot be null!");
     }
 

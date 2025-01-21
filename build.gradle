@@ -51,6 +51,11 @@ dependencies {
     // TriumphCMDs
     implementation 'dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT'
 
+    // HikariCP
+    implementation ('com.zaxxer:HikariCP:4.0.3') {
+        exclude module: 'slf4j-api'
+    }
+
     // LuckPerms
     compileOnly 'net.luckperms:api:5.4'
 

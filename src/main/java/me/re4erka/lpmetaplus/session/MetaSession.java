@@ -8,6 +8,7 @@ import net.luckperms.api.actionlog.Action;
 import net.luckperms.api.actionlog.ActionLogger;
 import net.luckperms.api.model.data.DataType;
 import net.luckperms.api.model.data.NodeMap;
+import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.Node;
@@ -27,6 +28,8 @@ public final class MetaSession implements AutoCloseable {
     private final UserManager userManager;
     private final ActionLogger actionLogger;
 
+    private final Group defaultGroup;
+
     private final User user;
     @Getter
     private final boolean lookup;
@@ -36,10 +39,13 @@ public final class MetaSession implements AutoCloseable {
     public MetaSession(@NotNull LPMetaPlus lpMetaPlus,
                        @NotNull UserManager userManager,
                        @NotNull ActionLogger actionLogger,
+                       @NotNull Group defaultGroup,
                        @NotNull User user, boolean lookup) {
         this.lpMetaPlus = lpMetaPlus;
         this.userManager = userManager;
         this.actionLogger = actionLogger;
+
+        this.defaultGroup = defaultGroup;
 
         this.user = user;
         this.lookup = lookup;
@@ -53,9 +59,8 @@ public final class MetaSession implements AutoCloseable {
 
     @NotNull
     public String getAsString(@NotNull Key key) {
-        return findFirst(key)
-                .map(MetaNode::getMetaValue)
-                .orElse("0");
+        return getFirst(key)
+                .getMetaValue();
     }
 
     public void edit(@NotNull Consumer<Editor> edit, boolean silent) {
@@ -72,10 +77,20 @@ public final class MetaSession implements AutoCloseable {
     }
 
     @NotNull
-    private Optional<MetaNode> findFirst(@NotNull Key key) {
+    private MetaNode getFirst(@NotNull Key key) {
         return metas().stream()
                 .filter(node -> isEquals(node, key))
-                .findFirst();
+                .findFirst()
+                .orElse(getFirstFromDefaultGroup(key));
+    }
+
+    @NotNull
+    @SuppressWarnings("ConstantConditions")
+    private MetaNode getFirstFromDefaultGroup(@NotNull Key key) {
+        return defaultGroup.getNodes(NodeType.META).stream()
+                .filter(node -> isEquals(node, key))
+                .findFirst()
+                .orElseThrow(() -> throwMetaNotFound(key));
     }
 
     @NotNull
@@ -110,6 +125,7 @@ public final class MetaSession implements AutoCloseable {
                 .build();
     }
 
+    @NotNull
     private CompletableFuture<Void> saveUser() {
         return userManager.saveUser(user);
     }
@@ -119,7 +135,7 @@ public final class MetaSession implements AutoCloseable {
         return Math.max(i, 0);
     }
 
-    private RuntimeException throwIfMetaNotFound(@NotNull Key key) {
+    private RuntimeException throwMetaNotFound(@NotNull Key key) {
         lpMetaPlus.logError("When trying to find meta for a user, it was not found. "
                 + "This meta may have been unset/cleared from the 'default' group, "
                 + "please restart the plugin or return the meta: '" + key + "'");
@@ -157,14 +173,11 @@ public final class MetaSession implements AutoCloseable {
         }
 
         public int remove(@NotNull Key key) {
-            return findFirst(key)
-                    .map(node -> {
-                        final String value = node.getMetaValue();
-                        removeNode(node);
-                        return value;
-                    })
-                    .map(Integer::parseUnsignedInt)
-                    .orElse(0);
+            final MetaNode node = getFirst(key);
+            final String value = node.getMetaValue();
+            removeNode(node);
+
+            return Integer.parseInt(value);
         }
 
         public void removeThen(@NotNull Key key, @NotNull Consumer<Integer> then) {

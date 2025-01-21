@@ -11,6 +11,7 @@ import me.re4erka.lpmetaplus.message.Message;
 import me.re4erka.lpmetaplus.util.Key;
 import me.re4erka.lpmetaplus.util.SortedMaps;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.*;
 
@@ -60,11 +61,21 @@ public final class ConfigurationMetas {
         return types.get(key.toString());
     }
 
+    public Key getOrThrow(@NotNull String type) {
+        final Key key = Key.of(type);
+        if (contains(key)) {
+            return key;
+        }
+
+        throw new IllegalArgumentException("The type of meta was not found!");
+    }
+
     public boolean contains(@NotNull Key key) {
         return types.containsKey(key.toString());
     }
 
     @NotNull
+    @Unmodifiable
     public List<String> names() {
         return Collections.unmodifiableList(
                 new ArrayList<>(types.keySet())

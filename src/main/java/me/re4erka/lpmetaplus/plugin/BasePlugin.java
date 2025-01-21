@@ -52,8 +52,7 @@ public abstract class BasePlugin<P extends LPMetaPlus> extends JavaPlugin {
         try {
             initialize.accept(self());
         } catch (Exception exception) {
-            getLogger().log(Level.SEVERE, "An error occurred while initializing {0}!", name);
-            exception.fillInStackTrace();
+            logError("An error occurred while initializing " + name, exception);
         }
     }
 

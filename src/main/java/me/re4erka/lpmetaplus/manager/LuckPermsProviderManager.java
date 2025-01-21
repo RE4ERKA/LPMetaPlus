@@ -18,6 +18,9 @@ public abstract class LuckPermsProviderManager {
 
     protected final ActionLogger actionLogger;
 
+    public static final String CONTEXT_KEY = "meta-plus";
+    protected static final String DEFAULT_GROUP_NAME = "default";
+
     protected LuckPermsProviderManager(@NotNull LPMetaPlus lpMetaPlus) {
         this.lpMetaPlus = lpMetaPlus;
 

@@ -2,6 +2,7 @@ package me.re4erka.lpmetaplus.util;
 
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Collections;
 import java.util.Map;
@@ -12,28 +13,33 @@ import java.util.TreeMap;
 public final class SortedMaps {
 
     @NotNull
+    @Unmodifiable
     public <K, V> SortedMap<K, V> of(@NotNull K key1, @NotNull V value1) {
         return unmodifiableSortedMap(createMap(key1, value1));
     }
 
     @NotNull
+    @Unmodifiable
     public <K, V> SortedMap<K, V> of(@NotNull K key1, @NotNull V value1, @NotNull K key2, @NotNull V value2) {
         return unmodifiableSortedMap(createMap(key1, value1, key2, value2));
     }
 
     @NotNull
+    @Unmodifiable
     public  <K, V> SortedMap<K, V> of(@NotNull K key1, @NotNull V value1, @NotNull K key2, @NotNull V value2,
                                       @NotNull K key3, @NotNull V value3) {
         return unmodifiableSortedMap(createMap(key1, value1, key2, value2, key3, value3));
     }
 
     @NotNull
+    @Unmodifiable
     public <K, V> SortedMap<K, V> of(@NotNull K key1, @NotNull V value1, @NotNull K key2, @NotNull V value2,
                                      @NotNull K key3, @NotNull V value3, @NotNull K key4, @NotNull V value4) {
         return unmodifiableSortedMap(createMap(key1, value1, key2, value2, key3, value3, key4, value4));
     }
 
     @NotNull
+    @Unmodifiable
     public <K, V> SortedMap<K, V> of(@NotNull K key1, @NotNull V value1, @NotNull K key2, @NotNull V value2,
                                      @NotNull K key3, @NotNull V value3, @NotNull K key4, @NotNull V value4,
                                      @NotNull K key5, @NotNull V value5) {
@@ -41,6 +47,7 @@ public final class SortedMaps {
     }
 
     @NotNull
+    @Unmodifiable
     public <K, V> SortedMap<K, V> of(@NotNull K key1, @NotNull V value1, @NotNull K key2, @NotNull V value2,
                                      @NotNull K key3, @NotNull V value3, @NotNull K key4, @NotNull V value4,
                                      @NotNull K key5, @NotNull V value5, @NotNull K key6, @NotNull V value6) {
@@ -50,6 +57,7 @@ public final class SortedMaps {
     }
 
     @NotNull
+    @Unmodifiable
     public <K, V> SortedMap<K, V> of(@NotNull K key1, @NotNull V value1, @NotNull K key2, @NotNull V value2,
                                      @NotNull K key3, @NotNull V value3, @NotNull K key4, @NotNull V value4,
                                      @NotNull K key5, @NotNull V value5, @NotNull K key6, @NotNull V value6,
@@ -60,6 +68,7 @@ public final class SortedMaps {
     }
 
     @NotNull
+    @Unmodifiable
     public <K, V> SortedMap<K, V> of(@NotNull K key1, @NotNull V value1, @NotNull K key2, @NotNull V value2,
                                      @NotNull K key3, @NotNull V value3, @NotNull K key4, @NotNull V value4,
                                      @NotNull K key5, @NotNull V value5, @NotNull K key6, @NotNull V value6,
@@ -71,6 +80,7 @@ public final class SortedMaps {
     }
 
     @NotNull
+    @Unmodifiable
     public <K, V> SortedMap<K, V> of(@NotNull K key1, @NotNull V value1, @NotNull K key2, @NotNull V value2,
                                      @NotNull K key3, @NotNull V value3, @NotNull K key4, @NotNull V value4,
                                      @NotNull K key5, @NotNull V value5, @NotNull K key6, @NotNull V value6,
@@ -84,6 +94,7 @@ public final class SortedMaps {
 
     @NotNull
     @SafeVarargs
+    @Unmodifiable
     public <K, V> SortedMap<K, V> ofEntries(@NotNull Map.Entry<K, V>... entries) {
         @SuppressWarnings("SortedCollectionWithNonComparableKeys")
         final TreeMap<K, V> map = new TreeMap<>();
@@ -95,11 +106,13 @@ public final class SortedMaps {
     }
 
     @NotNull
+    @Unmodifiable
     private <K, V> SortedMap<K, V> unmodifiableSortedMap(@NotNull TreeMap<K, V> map) {
         return Collections.unmodifiableSortedMap(map);
     }
 
     @NotNull
+    @Unmodifiable
     private <K, V> TreeMap<K, V> createMap(@NotNull Object... keyValues) {
         if (keyValues.length % 2 != 0) {
             throw new IllegalArgumentException("Odd number of arguments passed. Key-value pairs expected.");

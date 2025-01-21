@@ -9,6 +9,7 @@ import net.luckperms.api.event.node.NodeClearEvent;
 import net.luckperms.api.event.node.NodeMutateEvent;
 import net.luckperms.api.event.node.NodeRemoveEvent;
 import net.luckperms.api.model.data.DataType;
+import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import org.bukkit.OfflinePlayer;
@@ -22,15 +23,37 @@ import java.util.stream.Collectors;
 
 public class MetaManager extends LuckPermsProviderManager {
 
+    private final Group defaultGroup;
+
     public MetaManager(@NotNull LPMetaPlus lpMetaPlus) {
         super(lpMetaPlus);
+
+        this.defaultGroup = groupManager.getGroup(DEFAULT_GROUP_NAME);
+        throwIfDefaultGroupNotFound(defaultGroup);
     }
 
     @NotNull
+    @SuppressWarnings("ConstantConditions")
     public MetaSession getUser(@NotNull OfflinePlayer player) {
-        final User cachedUser = userManager.getUser(player.getUniqueId());
+        return getUser(player.getUniqueId());
+    }
+
+    @NotNull
+    @SuppressWarnings("ConstantConditions")
+    public MetaSession getUser(@NotNull UUID uuid) {
+        final User cachedUser = userManager.getUser(uuid);
         throwIfUserIsNull(cachedUser);
         return openSession(cachedUser, false);
+    }
+
+    @NotNull
+    public CompletableFuture<MetaSession> findUser(@NotNull UUID uuid, @NotNull String username) {
+        final User cachedUser = userManager.getUser(uuid);
+        if (cachedUser == null) {
+            return CompletableFuture.supplyAsync(() -> openSession(loadUser(uuid, username), true));
+        } else {
+            return CompletableFuture.completedFuture(openSession(cachedUser, false));
+        }
     }
 
     @NotNull
@@ -52,12 +75,12 @@ public class MetaManager extends LuckPermsProviderManager {
     private void warnIfRemovedPlusMetaFromGroup(@NotNull NodeMutateEvent nodeMutateEvent) {
         if (nodeMutateEvent.isGroup() && nodeMutateEvent.getDataType() == DataType.NORMAL) {
             final Set<Node> nodesBefore = nodeMutateEvent.getDataBefore().stream()
-                    .filter(node -> node.getContexts().containsKey(GroupManager.CONTEXT_KEY))
+                    .filter(node -> node.getContexts().containsKey(LuckPermsProviderManager.CONTEXT_KEY))
                     .collect(Collectors.toSet());
 
             if (!nodesBefore.isEmpty()) {
                 final Set<Node> nodesAfter = nodeMutateEvent.getDataAfter().stream()
-                        .filter(node -> node.getContexts().containsKey(GroupManager.CONTEXT_KEY))
+                        .filter(node -> node.getContexts().containsKey(LuckPermsProviderManager.CONTEXT_KEY))
                         .collect(Collectors.toSet());
 
                 if (nodesBefore.size() != nodesAfter.size()) {
@@ -82,7 +105,7 @@ public class MetaManager extends LuckPermsProviderManager {
 
     @NotNull
     private MetaSession openSession(@NotNull User user, boolean lookup) {
-        return new MetaSession(lpMetaPlus, userManager, actionLogger, user, lookup);
+        return new MetaSession(lpMetaPlus, userManager, actionLogger, defaultGroup, user, lookup);
     }
 
     @NotNull
@@ -101,6 +124,14 @@ public class MetaManager extends LuckPermsProviderManager {
         user.auditTemporaryNodes();
 
         return user;
+    }
+
+    private void throwIfDefaultGroupNotFound(@Nullable Group group) {
+        if (group == null) {
+            lpMetaPlus.logError("When trying to get the default group, a null was get, " +
+                    "which should not be the case.");
+            throw new IllegalStateException("Default group cannot be null!");
+        }
     }
 
     private void throwIfUserIsNull(@Nullable User user) {

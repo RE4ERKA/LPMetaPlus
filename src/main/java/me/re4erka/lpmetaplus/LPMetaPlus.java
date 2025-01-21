@@ -21,6 +21,7 @@ import me.re4erka.lpmetaplus.plugin.BasePlugin;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.PermissionHolder;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -29,6 +30,8 @@ import java.util.stream.Collectors;
 @Getter
 public final class LPMetaPlus extends BasePlugin<LPMetaPlus> {
 
+    @Accessors(fluent = true)
+    private Settings settings;
     @Accessors(fluent = true)
     private Messages messages;
 
@@ -63,6 +66,10 @@ public final class LPMetaPlus extends BasePlugin<LPMetaPlus> {
                 .build();
 
         final Path dataFolder = getDataFolder().toPath();
+        this.settings = YamlConfigurations.update(
+                dataFolder.resolve("config.yml"),
+                Settings.class, properties
+        );
         this.messages = YamlConfigurations.update(
                 dataFolder.resolve("messages.yml"),
                 Messages.class, properties
@@ -112,6 +119,7 @@ public final class LPMetaPlus extends BasePlugin<LPMetaPlus> {
                         new CustomCommand(this, entry.getKey(), entry.getValue())));
     }
 
+    @NotNull
     @Override
     protected LPMetaPlus self() {
         return this;

@@ -5,6 +5,9 @@ import dev.triumphteam.cmd.core.annotation.*;
 import dev.triumphteam.cmd.core.flag.Flags;
 import me.re4erka.lpmetaplus.LPMetaPlus;
 import me.re4erka.lpmetaplus.command.MetaCommand;
+import me.re4erka.lpmetaplus.message.placeholder.Placeholders;
+import me.re4erka.lpmetaplus.migration.MigrationType;
+import me.re4erka.lpmetaplus.migration.Migrator;
 import me.re4erka.lpmetaplus.operation.MetaOperation;
 import me.re4erka.lpmetaplus.operation.context.MetaOperationContext;
 import me.re4erka.lpmetaplus.operation.factory.MetaOperationFactory;
@@ -82,6 +85,23 @@ public class MainCommand extends MetaCommand {
 
             operation.execute(context, flags.hasFlag("s"));
         });
+    }
+
+    @SubCommand("migrate")
+    @Permission("lpmetaplus.command.migrate")
+    public void onMigrate(@NotNull CommandSender sender,
+                          @NotNull MigrationType migrationType,
+                          @NotNull Migrator.DatabaseType databaseType) {
+        commandMessages().migrationInProgress().send(sender, Placeholders.single("name", migrationType.name()));
+        migrationType.initialize(lpMetaPlus)
+                .migrate(databaseType)
+                .thenAccept(result -> {
+                    if (result.isFailed()) {
+                        commandMessages().migrationFailed().send(sender, result.toPlaceholders(migrationType));
+                    } else {
+                        commandMessages().migrated().send(sender, result.toPlaceholders(migrationType));
+                    }
+                });
     }
 
     @SubCommand("reload")

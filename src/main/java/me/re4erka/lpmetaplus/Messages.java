@@ -14,7 +14,7 @@ import java.util.List;
 @Accessors(fluent = true)
 @Configuration
 @SuppressWarnings("FieldMayBeFinal")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Messages {
 
     private Meta meta = new Meta();
@@ -46,6 +46,10 @@ public final class Messages {
         private Message invalidArguments = Message.of("&fВведенные вами аргументы &cнекорректны&f! Используйте &e/lpmetaplus help &fдля помощи");
 
         private Message noPermission = Message.of("&fУ вас &cнедостаточно прав&f, чтобы использовать эту команду!");
+
+        private Message migrationInProgress = Message.of("&fМиграция из плагина &a%name% &fв процессе...");
+        private Message migrated = Message.of("&fПлагин &aуспешно мигрировал &fигроков &e%count% &fза &6%took%ms &fиз плагина &a%name%&f.");
+        private Message migrationFailed = Message.of("&fМиграция из плагина &a%name% &fбыла &cпровалена&f! Заняло &6%took%ms");
 
         private Message reloaded = Message.of("&fПлагин был &aуспешно перезагружен&f!");
         private List<Message> help = Arrays.asList(
