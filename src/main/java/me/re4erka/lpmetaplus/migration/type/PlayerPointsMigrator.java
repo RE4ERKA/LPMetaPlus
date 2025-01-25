@@ -66,6 +66,8 @@ public class PlayerPointsMigrator extends Migrator {
                             }
 
                             migrateAll(migrationDataSet);
+                            stopwatch.stop();
+
                             return MigrationResult.of(
                                     migrationDataSet.size(),
                                     stopwatch.elapsed(TimeUnit.MILLISECONDS)

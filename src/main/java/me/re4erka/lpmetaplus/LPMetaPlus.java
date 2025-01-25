@@ -18,10 +18,8 @@ import me.re4erka.lpmetaplus.manager.type.MetaManager;
 import me.re4erka.lpmetaplus.message.Message;
 import me.re4erka.lpmetaplus.placeholder.MetaPlaceholder;
 import me.re4erka.lpmetaplus.plugin.BasePlugin;
-import me.re4erka.lpmetaplus.util.PluginEmulator;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.PermissionHolder;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,26 +45,6 @@ public final class LPMetaPlus extends BasePlugin<LPMetaPlus> {
     public void enable() {
         initialize("MetaManager", plugin -> this.metaManager = new MetaManager(plugin));
         initialize("GroupManager", plugin -> this.groupManager = new GroupManager(plugin));
-
-        initialize("Emulation", plugin -> {
-            if (settings.emulation().enabled()) {
-                settings.emulation().applyTo().forEach(emulation -> {
-                    if (Bukkit.getPluginManager().isPluginEnabled(emulation.getPluginName())) {
-                        logError("The " + emulation.getPluginName() + " plugin cannot be emulated as it is already running on the server. "
-                                + "Please disable the " + emulation.getPluginName() + " plugin to make the emulation work correctly.");
-                        return;
-                    }
-
-                    if (settings.emulation().emulateLookupNames()) {
-                        PluginEmulator.emulate(emulation.getPluginName());
-                    }
-
-                    emulation.load(plugin);
-                    logInfo(emulation.getPluginName() + " plugin is successfully emulated.");
-                });
-            }
-        });
-
         initialize("MetaPlaceholder", plugin -> {
             if (isSupportPlaceholderAPI()) {
                 new MetaPlaceholder(plugin).register();
@@ -74,18 +52,6 @@ public final class LPMetaPlus extends BasePlugin<LPMetaPlus> {
                 logNotFoundPlaceholderAPI();
             }
         });
-
-        System.out.println("CoinsEngine isEnabled(): " + Bukkit.getPluginManager().isPluginEnabled("CoinsEngine"));
-        System.out.println("PlayerPoints isEnabled(): " + Bukkit.getPluginManager().isPluginEnabled("PlayerPoints"));
-
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            settings.emulation().applyTo().forEach(emulation -> {
-                PluginEmulator.emulate(emulation.getPluginName());
-            });
-
-            System.out.println("CoinsEngine isEnabled(): " + Bukkit.getPluginManager().isPluginEnabled("CoinsEngine"));
-            System.out.println("PlayerPoints isEnabled(): " + Bukkit.getPluginManager().isPluginEnabled("PlayerPoints"));
-        }, 3);
 
         groupManager.load(metas);
         metaManager.registerWarningEvents();

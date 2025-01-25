@@ -39,6 +39,11 @@ public abstract class MetaCommand extends BaseCommand {
     }
 
     @NotNull
+    protected Messages.Migration migrationMessages() {
+        return lpMetaPlus.messages().migration();
+    }
+
+    @NotNull
     protected Messages.Meta metaMessages() {
         return lpMetaPlus.messages().meta();
     }

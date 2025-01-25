@@ -6,4 +6,4 @@ authors: [ RE4ERKA ]
 description: Enhances the meta for LuckPerms.
 website: t.me/re4erka
 depend: [ LuckPerms ]
-softdepend: [ PlaceholderAPI, PlayerPoints ]
+softdepend: [ PlaceholderAPI ]

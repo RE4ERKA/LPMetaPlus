@@ -1,15 +1,11 @@
 package me.re4erka.lpmetaplus;
 
-import com.google.common.collect.Sets;
 import de.exlll.configlib.Comment;
 import de.exlll.configlib.Configuration;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import me.re4erka.lpmetaplus.emulation.SupportedEmulation;
-
-import java.util.Set;
 
 @Getter
 @Accessors(fluent = true)
@@ -51,16 +47,14 @@ public final class Settings {
     }
 
     @Comment({"Эмуляция методов из API других плагинов на донатную валюту.",
-            "Не влияет на производительность."})
+            "Не влияет на производительность.",
+            ""})
     private Emulation emulation = new Emulation();
 
     @Getter
     @Accessors(fluent = true)
     @Configuration
     public static final class Emulation {
-
-        @Comment("Включить ли эмуляцию других плагинов?")
-        private boolean enabled = false;
 
         @Comment({"Какая мета будет по-дефолту для эмуляции?",
                 "Необходимо указать для: PLAYER_POINTS"})
@@ -73,16 +67,5 @@ public final class Settings {
         @Comment({"Игнорировать ли методы которые нереализованы для эмуляции?",
                 "Если включено, то не будет выбрасываться исключение NotEmulatedException."})
         private boolean ignoreNotEmulatedMethods = false;
-
-        @Comment({"Эмулировать список плагинов?",
-                "Если включено, то будет вносить в список плагинов эмулированный плагин, что позволит ",
-                "запускаться другим плагинам которые проверяют включен или нет эмулируемый плагин.",
-                "Влияет на поведение метода PluginManager.isPluginEnabled()"})
-        private boolean emulateLookupNames = true;
-
-        @Comment({"Список плагинов которые будут эмулироваться.",
-                "Доступно: PLAYER_POINTS и COINS_ENGINE"})
-        private Set<SupportedEmulation> applyTo = Sets.newHashSet(
-                SupportedEmulation.PLAYER_POINTS, SupportedEmulation.COINS_ENGINE);
     }
 }

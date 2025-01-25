@@ -35,7 +35,8 @@ public class GroupManager extends LuckPermsProviderManager {
                     groupManager.saveGroup(group);
                 }).join();
 
-        logResult(metas.types(), stopwatch);
+        stopwatch.stop();
+        logResult(metas.types(), stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 
     private void loadDefaultGroupValues(@NotNull Group group, @NotNull Map<String, CustomMeta> metaMap) {
@@ -78,12 +79,11 @@ public class GroupManager extends LuckPermsProviderManager {
                 .add(CONTEXT_KEY, Boolean.TRUE.toString());
     }
 
-    private void logResult(@NotNull Map<String, CustomMeta> metaMap, @NotNull Stopwatch stopwatch) {
+    private void logResult(@NotNull Map<String, CustomMeta> metaMap, long tookToMillis) {
         final StringJoiner joiner = new StringJoiner(", ");
         metaMap.forEach((key, value) -> joiner.add(key + "=" + value.defaultValue()));
 
         lpMetaPlus.getLogger().log(Level.INFO,
-                "Metadata set for group 'default': " + joiner + " in {0}ms",
-                stopwatch.elapsed(TimeUnit.MILLISECONDS));
+                "Metadata set for group 'default': " + joiner + " in {0}ms", tookToMillis);
     }
 }

@@ -105,14 +105,19 @@ public class MainCommand extends MetaCommand {
     public void onMigrate(@NotNull CommandSender sender,
                           @NotNull MigrationType migrationType,
                           @NotNull Migrator.DatabaseType databaseType) {
-        commandMessages().migrationInProgress().send(sender, Placeholders.single("name", migrationType.name()));
+        if (migrationType.isDisabled()) {
+            migrationMessages().pluginNotFound().send(sender);
+            return;
+        }
+
+        migrationMessages().inProgress().send(sender, Placeholders.single("name", migrationType.name()));
         migrationType.initialize(lpMetaPlus)
                 .migrate(databaseType)
                 .thenAccept(result -> {
                     if (result.isFailed()) {
-                        commandMessages().migrationFailed().send(sender, result.toPlaceholders(migrationType));
+                        migrationMessages().failed().send(sender, result.toPlaceholders(migrationType));
                     } else {
-                        commandMessages().migrated().send(sender, result.toPlaceholders(migrationType));
+                        migrationMessages().successfully().send(sender, result.toPlaceholders(migrationType));
                     }
                 });
     }

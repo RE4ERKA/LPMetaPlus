@@ -48,10 +48,6 @@ public final class Messages {
 
         private Message noPermission = Message.of("&fУ вас &cнедостаточно прав&f, чтобы использовать эту команду!");
 
-        private Message migrationInProgress = Message.of("&fМиграция из плагина &a%name% &fв процессе...");
-        private Message migrated = Message.of("&fПлагин &aуспешно мигрировал &fигроков &e%count% &fза &6%took%ms &fиз плагина &a%name%&f.");
-        private Message migrationFailed = Message.of("&fМиграция из плагина &a%name% &fбыла &cпровалена&f! Заняло &6%took%ms");
-
         private Message reloaded = Message.of("&fПлагин был &aуспешно перезагружен&f!");
         private List<Message> help = Arrays.asList(
                 Message.of("&fДоступные команды&8:"),
@@ -61,5 +57,19 @@ public final class Messages {
                 Message.of("&8- &e/lpmetaplus give &f<тип> <количество> <ник> &7(-silent)"),
                 Message.of("&8- &e/lpmetaplus reload")
         );
+    }
+
+    private Migration migration = new Migration();
+
+    @Getter
+    @Accessors(fluent = true)
+    @Configuration
+    public static final class Migration {
+
+        private Message inProgress = Message.of("&fМиграция из плагина &a%name% &fв процессе...");
+        private Message successfully = Message.of("&fПлагин &aуспешно мигрировал &fигроков &e%count% &fза &6%took%ms &fиз плагина &a%name%&f.");
+
+        private Message pluginNotFound = Message.of("&fПлагин для миграции &cне был найден&f! Возможно, он не включен.");
+        private Message failed = Message.of("&fМиграция из плагина &a%name% &fбыла &cпровалена&f! Заняло &6%took%ms");
     }
 }
