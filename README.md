@@ -10,19 +10,19 @@ dependencies {
 }
 ```
 ```xml
-	<repositories>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
-	</repositories>
-    <dependencies>
-	    <dependency>
-	        <groupId>com.github.RE4ERKA</groupId>
+<repositories>
+	<repository>
+		<id>jitpack.io</id>
+		<url>https://jitpack.io</url>
+	</repository>
+</repositories>
+<dependencies>
+	<dependency>
+		<groupId>com.github.RE4ERKA</groupId>
 	        <artifactId>LPMetaPlus</artifactId>
 	        <version>1.0.0</version>
-	    </dependency>
-    </dependencies>
+	</dependency>
+</dependencies>
 ```
 
 Пример работы с API:
