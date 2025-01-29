@@ -13,6 +13,7 @@ import lombok.experimental.Accessors;
 import me.re4erka.lpmetaplus.command.type.CustomCommand;
 import me.re4erka.lpmetaplus.command.type.MainCommand;
 import me.re4erka.lpmetaplus.configuration.ConfigurationMetas;
+import me.re4erka.lpmetaplus.formatting.CurrencyFormatter;
 import me.re4erka.lpmetaplus.manager.type.GroupManager;
 import me.re4erka.lpmetaplus.manager.type.MetaManager;
 import me.re4erka.lpmetaplus.message.Message;
@@ -41,10 +42,13 @@ public final class LPMetaPlus extends BasePlugin<LPMetaPlus> {
     private ConfigurationMetas metas;
     private MetaManager metaManager;
 
+    private CurrencyFormatter currencyFormatter;
+
     @Override
     public void enable() {
         initialize("MetaManager", plugin -> this.metaManager = new MetaManager(plugin));
         initialize("GroupManager", plugin -> this.groupManager = new GroupManager(plugin));
+        initialize("CurrencyFormatter", plugin -> this.currencyFormatter = new CurrencyFormatter(plugin));
         initialize("MetaPlaceholder", plugin -> {
             if (isSupportPlaceholderAPI()) {
                 new MetaPlaceholder(plugin).register();

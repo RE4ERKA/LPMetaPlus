@@ -9,6 +9,7 @@ import me.re4erka.lpmetaplus.session.MetaSession;
 import me.re4erka.lpmetaplus.util.Key;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Blocking;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,6 +46,7 @@ public abstract class Migrator {
         return plugin.getDataFolder().toPath().resolve(fileName + ".db");
     }
 
+    @Blocking
     protected void migrateAll(@NotNull Set<MigrationData> dataList) {
         final MetaManager metaManager = lpMetaPlus.getMetaManager();
         for (MigrationData data : dataList) {

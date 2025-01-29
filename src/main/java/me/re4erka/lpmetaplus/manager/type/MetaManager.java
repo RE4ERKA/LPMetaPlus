@@ -13,6 +13,7 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Blocking;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -109,6 +110,7 @@ public class MetaManager extends LuckPermsProviderManager {
     }
 
     @NotNull
+    @Blocking
     private User lookup(@NotNull String username) {
         UUID uuid = userManager.lookupUniqueId(username).join();
         if (uuid == null) {
@@ -119,6 +121,7 @@ public class MetaManager extends LuckPermsProviderManager {
     }
 
     @NotNull
+    @Blocking
     private User loadUser(@NotNull UUID uuid, @NotNull String username) {
         final User user = userManager.loadUser(uuid, username).join();
         user.auditTemporaryNodes();

@@ -3,6 +3,7 @@ package me.re4erka.lpmetaplus.placeholder;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.re4erka.lpmetaplus.LPMetaPlus;
 import me.re4erka.lpmetaplus.configuration.type.CustomMeta;
+import me.re4erka.lpmetaplus.formatting.CurrencyFormatter;
 import me.re4erka.lpmetaplus.manager.type.MetaManager;
 import me.re4erka.lpmetaplus.session.MetaSession;
 import me.re4erka.lpmetaplus.util.Formatter;
@@ -19,6 +20,7 @@ public class MetaPlaceholder extends PlaceholderExpansion {
     private final LPMetaPlus lpMetaPlus;
 
     private final MetaManager metaManager;
+    private final CurrencyFormatter currencyFormatter;
 
     private static final String SEPARATOR = "_";
 
@@ -33,6 +35,7 @@ public class MetaPlaceholder extends PlaceholderExpansion {
         this.lpMetaPlus = lpMetaPlus;
 
         this.metaManager = lpMetaPlus.getMetaManager();
+        this.currencyFormatter = lpMetaPlus.getCurrencyFormatter();
     }
 
     @NotNull
@@ -76,7 +79,11 @@ public class MetaPlaceholder extends PlaceholderExpansion {
         final CustomMeta meta = lpMetaPlus.metas().type(key);
         switch (params.length) {
             case 2: {
-                if (params[1].equals("symbol")) {
+                if (params[1].equals("formatted")) {
+                    try (MetaSession session = metaManager.getUser(player)) {
+                        return currencyFormatter.format(session.get(key), meta.symbol());
+                    }
+                } else if (params[1].equals("symbol")) {
                     return meta.symbol() == null ? EMPTY_SYMBOL : Character.toString(meta.symbol());
                 }
             }

@@ -9,6 +9,7 @@ import net.luckperms.api.context.ImmutableContextSet;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.MetaNode;
+import org.jetbrains.annotations.Blocking;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -22,6 +23,7 @@ public class GroupManager extends LuckPermsProviderManager {
         super(lpMetaPlus);
     }
 
+    @Blocking
     public void load(@NotNull ConfigurationMetas metas) {
         lpMetaPlus.logInfo("Setting default metadata for group 'default'...");
         final Stopwatch stopwatch = Stopwatch.createStarted();

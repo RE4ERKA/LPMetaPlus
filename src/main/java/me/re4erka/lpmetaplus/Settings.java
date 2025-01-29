@@ -6,6 +6,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import me.re4erka.lpmetaplus.formatting.SuffixType;
+import me.re4erka.lpmetaplus.util.SortedMaps;
+
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Getter
 @Accessors(fluent = true)
@@ -46,9 +53,65 @@ public final class Settings {
         }
     }
 
+    @Comment("Форматирование чисел донатной валюты.")
+    private Formatting formatting = new Formatting();
+
+    @Getter
+    @Accessors(fluent = true)
+    @Configuration
+    public static final class Formatting {
+
+        @Comment({"Итоговый вывод отформатированного числа.",
+                "%s - является значением валюты.",
+                "%c - является символов валюты."})
+        private String output = "%s %c";
+
+        @Comment({"Разделитель числа валюты.",
+                "Если указать пустым, то отключено."})
+        private char separator = '.';
+
+        public boolean isCompactEnabled() {
+            return compact != null && compact.enabled;
+        }
+
+        public Optional<Compact> compact() {
+            return Optional.ofNullable(compact);
+        }
+
+        @Getter(value = AccessLevel.NONE)
+        @Comment({"Форматирование числа компактным методом.",
+                "К примеру: \"1.4M ◆\" или \"1.5K ◆\""})
+        private Compact compact = new Compact();
+
+        @Getter
+        @Accessors(fluent = true)
+        @Configuration
+        public static final class Compact {
+
+            @Comment("Включить ли компактность?")
+            private boolean enabled = false;
+
+            @Comment({"Длина числа после раздителя.",
+                    "Если указано 0, то отключено."})
+            private int magnitude = 1;
+
+            @Comment("Отображение суффиксов.")
+            private Map<SuffixType, String> suffixes = SortedMaps.of(
+                    SuffixType.THOUSAND, "K",
+                    SuffixType.MILLION, "M",
+                    SuffixType.BILLION, "B"
+            );
+
+            public Map<SuffixType, String> suffixesToEnumMap() {
+                final EnumMap<SuffixType, String> map = new EnumMap<>(SuffixType.class);
+                map.putAll(suffixes);
+                return Collections.unmodifiableMap(map);
+            }
+        }
+    }
+
     @Comment({"Эмуляция методов из API других плагинов на донатную валюту.",
-            "Не влияет на производительность.",
-            ""})
+            "Не влияет на производительность."})
     private Emulation emulation = new Emulation();
 
     @Getter
@@ -56,9 +119,9 @@ public final class Settings {
     @Configuration
     public static final class Emulation {
 
-        @Comment({"Какая мета будет по-дефолту для эмуляции?",
+        @Comment({"Какой тип мета-данной будет по-дефолту для эмуляции?",
                 "Необходимо указать для: PLAYER_POINTS"})
-        private String defaultMeta = "RUBIES";
+        private String defaultType = "RUBIES";
 
         @Comment({"Выполнять ли методы из эмуляции всегда принудительно в тихом режиме?",
                 "Если включено, то не будет логгирования от LuckPerms в консоли."})
