@@ -94,7 +94,7 @@ public class MainCommand extends MetaCommand {
                        @NotNull @Suggestion("loaded_user_names") String target, @NotNull Flags flags) {
         final MetaOperationContext context = MetaOperationContext.of(sender, type, target);
         final MetaOperation operation = MetaOperationFactory.createEditable(lpMetaPlus,
-                (key, editor) -> editor.remove(key),
+                (key, editor) -> editor.reset(key),
                 (meta) -> metaMessages().reset().send(sender, buildPlaceholders(target, meta)));
 
         operation.execute(context, flags.hasFlag("s"));

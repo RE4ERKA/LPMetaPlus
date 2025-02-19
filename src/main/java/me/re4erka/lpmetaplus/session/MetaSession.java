@@ -172,6 +172,11 @@ public final class MetaSession implements AutoCloseable {
             });
         }
 
+        public void reset(@NotNull Key key) {
+            removeNode(getFirst(key));
+            addAction(buildResetMetaAction(key));
+        }
+
         public int remove(@NotNull Key key) {
             final MetaNode node = getFirst(key);
             final String value = node.getMetaValue();
@@ -208,6 +213,13 @@ public final class MetaSession implements AutoCloseable {
         private MetaAction buildMetaAction(@NotNull MetaAction.Type type, @NotNull Key key, int count) {
             return MetaAction.builder()
                     .type(type).key(key).count(count)
+                    .build();
+        }
+
+        @NotNull
+        private MetaAction buildResetMetaAction(@NotNull Key key) {
+            return MetaAction.builder()
+                    .type(MetaAction.Type.RESET).key(key)
                     .build();
         }
 

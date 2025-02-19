@@ -57,9 +57,14 @@ public class MetaPlaceholder extends PlaceholderExpansion {
     }
 
     @Override
+    public boolean persist() {
+        return true;
+    }
+
+    @Override
     @Nullable
-    public String onRequest(@NotNull OfflinePlayer player, @NotNull String rawParams) {
-        if (!player.isOnline()) {
+    public String onRequest(OfflinePlayer player, @NotNull String rawParams) {
+        if (player == null || !player.isOnline() || player.getPlayer() == null) {
             return PLAYER_NOT_ONLINE;
         }
 

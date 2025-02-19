@@ -44,7 +44,8 @@ public final class Messages {
         private Message unknownCommand = Message.of("&fВведенная вами команда &cне была найдена&f!");
         private Message tooManyArguments = Message.of("&fВами введенно &cслишком много &fаргументов!");
         private Message notEnoughArguments = Message.of("&fВами введенно &cнедостаточно &fаргументов!");
-        private Message invalidArguments = Message.of("&fВведенные вами аргументы &cнекорректны&f! Используйте &e/lpmetaplus help &fдля помощи");
+        private Message invalidArguments = Message.of("&fВведенные вами аргументы &cнекорректны&f! " +
+                "Используйте &e/lpmetaplus help &fдля помощи");
 
         private Message noPermission = Message.of("&fУ вас &cнедостаточно прав&f, чтобы использовать эту команду!");
 
@@ -67,7 +68,8 @@ public final class Messages {
     public static final class Migration {
 
         private Message inProgress = Message.of("&fМиграция из плагина &a%name% &fв процессе...");
-        private Message successfully = Message.of("&fПлагин &aуспешно мигрировал &fигроков &e%count% &fза &6%took%ms &fиз плагина &a%name%&f.");
+        private Message successfully = Message.of("&fПлагин &aуспешно мигрировал &fигроков &e%count% " +
+                "&fза &6%took%ms &fиз плагина &a%name%&f.");
 
         private Message pluginNotFound = Message.of("&fПлагин для миграции &cне был найден&f! Возможно, он не включен.");
         private Message failed = Message.of("&fМиграция из плагина &a%name% &fбыла &cпровалена&f! Заняло &6%took%ms");

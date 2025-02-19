@@ -27,6 +27,8 @@ public abstract class Migrator {
     protected final Key defaultType;
     protected final Settings.Migration.Credentials credentials;
 
+    protected static final String MIGRATION_POOL_NAME = "lpmetaplus_migration_pool";
+
     protected Migrator(@NotNull String name,
                        @NotNull LPMetaPlus lpMetaPlus) {
         this.lpMetaPlus = lpMetaPlus;
@@ -42,8 +44,12 @@ public abstract class Migrator {
 
     public abstract CompletableFuture<MigrationResult> migrate(@NotNull DatabaseType type);
 
-    protected Path getDatabaseFilePath(@NotNull String fileName) {
+    protected Path filePath(@NotNull String fileName) {
         return plugin.getDataFolder().toPath().resolve(fileName + ".db");
+    }
+
+    protected String url(@NotNull String host, int port, @NotNull String database) {
+        return host + ':' + port + '/' + database;
     }
 
     @Blocking

@@ -4,6 +4,8 @@ import de.exlll.configlib.Configuration;
 import lombok.*;
 import lombok.experimental.Accessors;
 import me.re4erka.lpmetaplus.message.Message;
+import me.re4erka.lpmetaplus.message.placeholder.Placeholders;
+import me.re4erka.lpmetaplus.placeholder.provider.PlaceholderProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,7 +20,7 @@ import java.util.Map;
 @Configuration
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public final class CustomMeta {
+public final class CustomMeta implements PlaceholderProvider {
 
     @Nullable
     @Builder.Default
@@ -46,6 +48,14 @@ public final class CustomMeta {
 
     public boolean isCommandEnabled() {
         return command != null && command.enabled;
+    }
+
+    @Override
+    public Placeholders.Builder builderPlaceholders() {
+        return Placeholders.builder()
+                .add("display_name", displayName)
+                .add("default_value", defaultValue)
+                .add("symbol", symbol);
     }
 
     private Command command = new Command();

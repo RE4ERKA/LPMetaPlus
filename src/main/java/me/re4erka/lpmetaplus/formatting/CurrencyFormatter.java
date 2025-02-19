@@ -38,6 +38,7 @@ public class CurrencyFormatter {
                 symbol == null ? StringUtils.EMPTY : symbol);
     }
 
+    @NotNull
     private String formatCompact(int value) {
         if (value >= 1_000_000_000) {
             return formatWithSuffix(value, SuffixType.BILLION);
@@ -80,8 +81,10 @@ public class CurrencyFormatter {
                     .append(fractionalPart);
         }
 
-        final String value = suffixes.getOrDefault(suffix, StringUtils.EMPTY);
-        result.append(value);
+        final String value = suffixes.get(suffix);
+        if (value != null) {
+            result.append(value);
+        }
 
         return result.toString();
     }

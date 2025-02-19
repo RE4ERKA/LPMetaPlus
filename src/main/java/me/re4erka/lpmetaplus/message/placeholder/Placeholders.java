@@ -1,6 +1,7 @@
 package me.re4erka.lpmetaplus.message.placeholder;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,9 +10,9 @@ import java.util.*;
 
 public final class Placeholders {
 
-    private final List<Placeholder> placeholders;
+    private final Set<Placeholder> placeholders;
 
-    private Placeholders(@NotNull List<Placeholder> placeholders) {
+    private Placeholders(@NotNull Set<Placeholder> placeholders) {
         this.placeholders = placeholders;
     }
 
@@ -28,7 +29,8 @@ public final class Placeholders {
     @NotNull
     public static Placeholders single(@NotNull String search, @NotNull String replacement) {
         return new Placeholders(
-                Lists.newArrayList(Placeholder.of(search, replacement))
+                Collections.unmodifiableSet(
+                        Sets.newHashSet(Placeholder.of(search, replacement)))
         );
     }
 
@@ -39,7 +41,7 @@ public final class Placeholders {
 
     public static class Builder {
 
-        private final List<Placeholder> placeholders = new ArrayList<>();
+        private final Set<Placeholder> placeholders = new HashSet<>();
 
         @NotNull
         public Builder add(@NotNull String search, @Nullable String replacement) {
@@ -68,7 +70,7 @@ public final class Placeholders {
         @NotNull
         public Placeholders build() {
             return new Placeholders(
-                    Collections.unmodifiableList(placeholders)
+                    Collections.unmodifiableSet(placeholders)
             );
         }
 

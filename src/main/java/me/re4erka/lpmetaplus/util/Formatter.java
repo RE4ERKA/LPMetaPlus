@@ -1,16 +1,19 @@
 package me.re4erka.lpmetaplus.util;
 
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
 public final class Formatter {
 
+    private static final String PREFIX_HEX_COLOR = "§x";
+
     @NotNull
     public String format(@NotNull String input) {
         if (input.isEmpty()) {
-            return "";
+            return StringUtils.EMPTY;
         }
 
         final StringBuilder result = new StringBuilder(input.length());
@@ -29,7 +32,7 @@ public final class Formatter {
                     result.append(current);
                 }
             } else if (current == '#' && i + 6 < chars.length && isHexColor(chars, i + 1)) {
-                result.append("§x");
+                result.append(PREFIX_HEX_COLOR);
                 for (int j = 0; j < 6; j++) {
                     result.append('§').append(chars[i + 1 + j]);
                 }

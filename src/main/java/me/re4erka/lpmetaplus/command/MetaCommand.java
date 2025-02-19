@@ -57,7 +57,7 @@ public abstract class MetaCommand extends BaseCommand {
 
     @NotNull
     protected Placeholders buildPlaceholders(@NotNull String target, @NotNull CustomMeta meta) {
-        return builderPlaceholders(meta)
+        return meta.builderPlaceholders()
                 .add("target", target)
                 .build();
     }
@@ -69,14 +69,7 @@ public abstract class MetaCommand extends BaseCommand {
 
     @NotNull
     private Placeholders.Builder builderPlaceholders(@NotNull CustomMeta meta, int balance) {
-        return builderPlaceholders(meta)
-                .add("balance", Integer.toString(balance));
-    }
-
-    @NotNull
-    private Placeholders.Builder builderPlaceholders(@NotNull CustomMeta meta) {
-        return Placeholders.builder()
-                .add("display_name", meta.displayName())
-                .add("symbol", meta.symbol());
+        return meta.builderPlaceholders()
+                .add("balance", balance);
     }
 }

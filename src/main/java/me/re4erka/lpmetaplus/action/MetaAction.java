@@ -8,6 +8,7 @@ import me.re4erka.lpmetaplus.util.Key;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
+import java.util.StringJoiner;
 
 @Getter
 @Accessors(fluent = true)
@@ -17,7 +18,7 @@ public class MetaAction {
     private final Type type;
 
     private final Key key;
-    private final int count;
+    private final Integer count;
 
     private final Instant timestamp = Instant.now();
 
@@ -26,7 +27,17 @@ public class MetaAction {
 
     @NotNull
     public String toDescription() {
-        return String.join(SPACE, META_PREFIX, type.action, key.toString(), Integer.toUnsignedString(count));
+        final StringJoiner joiner = new StringJoiner(SPACE);
+        joiner.add(META_PREFIX)
+                .add(type.action);
+
+        return count == null
+                ? joiner.toString()
+                : joiner.add(countToString()).toString();
+    }
+
+    private String countToString() {
+        return Integer.toString(count);
     }
 
     @Getter
@@ -34,7 +45,8 @@ public class MetaAction {
     public enum Type {
         SET("set"),
         GIVE("give"),
-        TAKE("take");
+        TAKE("take"),
+        RESET("reset");
 
         @Accessors(fluent = true)
         private final String action;

@@ -29,14 +29,14 @@ public class PlayerPointsMigrator extends Migrator {
         return CompletableFuture.supplyAsync(() -> {
             final Stopwatch stopwatch = Stopwatch.createStarted();
             final String jdbcUrl = type == DatabaseType.SQLITE
-                    ? "jdbc:sqlite:" + getDatabaseFilePath(name.toLowerCase(Locale.ROOT))
-                    : "jdbc:mysql://" + credentials.host() + ":" + credentials.port() + "/" + credentials.database();
+                    ? "jdbc:sqlite:" + filePath(name.toLowerCase(Locale.ROOT))
+                    : "jdbc:mysql://" + url(credentials.host(), credentials.port(), credentials.database());
 
             try (HikariDataSource connectionPool = new HikariDataSource()) {
                 connectionPool.setJdbcUrl(jdbcUrl);
                 connectionPool.setUsername(credentials.username());
                 connectionPool.setPassword(credentials.password());
-                connectionPool.setPoolName("lpmetaplus_migrator_pool");
+                connectionPool.setPoolName(MIGRATION_POOL_NAME);
 
                 final Set<MigrationData> migrationDataSet = Sets.newHashSet();
                 try (Connection connection = connectionPool.getConnection()) {
@@ -68,7 +68,7 @@ public class PlayerPointsMigrator extends Migrator {
                             migrateAll(migrationDataSet);
                             stopwatch.stop();
 
-                            return MigrationResult.of(
+                            return MigrationResult.success(
                                     migrationDataSet.size(),
                                     stopwatch.elapsed(TimeUnit.MILLISECONDS)
                             );
@@ -78,7 +78,7 @@ public class PlayerPointsMigrator extends Migrator {
             } catch (Throwable exception) {
                 lpMetaPlus.logError("An error occurred when migrating from " + name + " with " + type.name() + ". "
                         + "The connection credentials may have been entered incorrectly.", exception);
-                return MigrationResult.failed(stopwatch.elapsed(TimeUnit.MILLISECONDS));
+                return MigrationResult.failure(stopwatch.elapsed(TimeUnit.MILLISECONDS));
             }
         });
     }
