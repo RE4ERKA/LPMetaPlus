@@ -99,8 +99,7 @@ public final class Settings {
             private Map<SuffixType, String> suffixes = SortedMaps.of(
                     SuffixType.THOUSAND, "K",
                     SuffixType.MILLION, "M",
-                    SuffixType.BILLION, "B"
-            );
+                    SuffixType.BILLION, "B");
 
             public Map<SuffixType, String> suffixesToEnumMap() {
                 final EnumMap<SuffixType, String> map = new EnumMap<>(SuffixType.class);

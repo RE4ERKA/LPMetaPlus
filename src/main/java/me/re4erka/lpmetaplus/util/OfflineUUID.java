@@ -14,6 +14,7 @@ public final class OfflineUUID {
     @NotNull
     public UUID fromName(@NotNull String name) {
         final String prefixedName = PREFIX + name;
-        return UUID.nameUUIDFromBytes(prefixedName.getBytes(StandardCharsets.UTF_8));
+        return UUID.nameUUIDFromBytes(
+                prefixedName.getBytes(StandardCharsets.UTF_8));
     }
 }

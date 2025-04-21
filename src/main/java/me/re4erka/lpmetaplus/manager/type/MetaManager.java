@@ -133,7 +133,7 @@ public class MetaManager extends LuckPermsProviderManager {
         if (group == null) {
             lpMetaPlus.logError("When trying to get the default group, a null was get, " +
                     "which should not be the case.");
-            throw new IllegalStateException("Default group cannot be null!");
+            throw new IllegalStateException("Default group cannot be null");
         }
     }
 

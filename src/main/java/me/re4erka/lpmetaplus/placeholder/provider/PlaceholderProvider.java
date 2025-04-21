@@ -7,9 +7,9 @@ import me.re4erka.lpmetaplus.message.placeholder.Placeholders;
  */
 public interface PlaceholderProvider {
 
-    Placeholders.Builder builderPlaceholders();
+    Placeholders.Builder placeholdersBuilder();
 
     default Placeholders toPlaceholders() {
-        return builderPlaceholders().build();
+        return placeholdersBuilder().build();
     }
 }

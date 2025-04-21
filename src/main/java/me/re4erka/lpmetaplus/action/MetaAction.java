@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
-import me.re4erka.lpmetaplus.util.Key;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
@@ -17,7 +16,7 @@ public class MetaAction {
 
     private final Type type;
 
-    private final Key key;
+    private final String key;
     private final Integer count;
 
     private final Instant timestamp = Instant.now();
@@ -31,11 +30,11 @@ public class MetaAction {
         joiner.add(META_PREFIX)
                 .add(type.action);
 
-        return count == null
-                ? joiner.toString()
+        return count == null ? joiner.toString()
                 : joiner.add(countToString()).toString();
     }
 
+    @NotNull
     private String countToString() {
         return Integer.toString(count);
     }

@@ -3,7 +3,6 @@ package me.re4erka.lpmetaplus.session;
 import lombok.Getter;
 import me.re4erka.lpmetaplus.LPMetaPlus;
 import me.re4erka.lpmetaplus.action.MetaAction;
-import me.re4erka.lpmetaplus.util.Key;
 import net.luckperms.api.actionlog.Action;
 import net.luckperms.api.actionlog.ActionLogger;
 import net.luckperms.api.model.data.DataType;
@@ -36,6 +35,8 @@ public final class MetaSession implements AutoCloseable {
 
     private static final UUID CONSOLE_UUID = new UUID(0, 0);
 
+    private static final String ZERO = "0";
+
     public MetaSession(@NotNull LPMetaPlus lpMetaPlus,
                        @NotNull UserManager userManager,
                        @NotNull ActionLogger actionLogger,
@@ -51,14 +52,13 @@ public final class MetaSession implements AutoCloseable {
         this.lookup = lookup;
     }
 
-    public int get(@NotNull Key key) {
+    public int get(@NotNull String key) {
         return zeroOrGreaterParse(
-                getAsString(key)
-        );
+                getAsString(key));
     }
 
     @NotNull
-    public String getAsString(@NotNull Key key) {
+    public String getAsString(@NotNull String key) {
         return getFirst(key)
                 .getMetaValue();
     }
@@ -77,7 +77,7 @@ public final class MetaSession implements AutoCloseable {
     }
 
     @NotNull
-    private MetaNode getFirst(@NotNull Key key) {
+    private MetaNode getFirst(@NotNull String key) {
         return metas().stream()
                 .filter(node -> isEquals(node, key))
                 .findFirst()
@@ -86,7 +86,7 @@ public final class MetaSession implements AutoCloseable {
 
     @NotNull
     @SuppressWarnings("ConstantConditions")
-    private MetaNode getFirstFromDefaultGroup(@NotNull Key key) {
+    private MetaNode getFirstFromDefaultGroup(@NotNull String key) {
         return defaultGroup.getNodes(NodeType.META).stream()
                 .filter(node -> isEquals(node, key))
                 .findFirst()
@@ -98,7 +98,7 @@ public final class MetaSession implements AutoCloseable {
         return user.getNodes(NodeType.META);
     }
 
-    private boolean isEquals(@NotNull MetaNode node, @NotNull Key key) {
+    private boolean isEquals(@NotNull MetaNode node, @NotNull String key) {
         return node.getMetaKey().equals(key.toLowerCase());
     }
 
@@ -135,7 +135,7 @@ public final class MetaSession implements AutoCloseable {
         return Math.max(i, 0);
     }
 
-    private RuntimeException throwMetaNotFound(@NotNull Key key) {
+    private RuntimeException throwMetaNotFound(@NotNull String key) {
         lpMetaPlus.logError("When trying to find meta for a user, it was not found. "
                 + "This meta may have been unset/cleared from the 'default' group, "
                 + "please restart the plugin or return the meta: '" + key + "'");
@@ -152,32 +152,32 @@ public final class MetaSession implements AutoCloseable {
             this.silent = silent;
         }
 
-        public void set(@NotNull Key key, @Range(from = 0, to = Integer.MAX_VALUE) int count) {
+        public void set(@NotNull String key, @Range(from = 0, to = Integer.MAX_VALUE) int count) {
             remove(key);
             addNode(buildMetaNode(key, zeroOrGreaterToString(count)));
             addAction(buildMetaAction(MetaAction.Type.SET, key, count));
         }
 
-        public void give(@NotNull Key key, @Range(from = 0, to = Integer.MAX_VALUE) int count) {
+        public void give(@NotNull String key, @Range(from = 0, to = Integer.MAX_VALUE) int count) {
             removeThen(key, previousCount -> {
                 addNode(buildMetaNode(key, zeroOrGreaterToString(previousCount + count)));
                 addAction(buildMetaAction(MetaAction.Type.GIVE, key, count));
             });
         }
 
-        public void take(@NotNull Key key, @Range(from = 0, to = Integer.MAX_VALUE) int count) {
+        public void take(@NotNull String key, @Range(from = 0, to = Integer.MAX_VALUE) int count) {
             removeThen(key, previousCount -> {
                 addNode(buildMetaNode(key, zeroOrGreaterToString(previousCount - count)));
                 addAction(buildMetaAction(MetaAction.Type.TAKE, key, count));
             });
         }
 
-        public void reset(@NotNull Key key) {
+        public void reset(@NotNull String key) {
             removeNode(getFirst(key));
             addAction(buildResetMetaAction(key));
         }
 
-        public int remove(@NotNull Key key) {
+        public int remove(@NotNull String key) {
             final MetaNode node = getFirst(key);
             final String value = node.getMetaValue();
             removeNode(node);
@@ -185,12 +185,12 @@ public final class MetaSession implements AutoCloseable {
             return Integer.parseInt(value);
         }
 
-        public void removeThen(@NotNull Key key, @NotNull Consumer<Integer> then) {
+        public void removeThen(@NotNull String key, @NotNull Consumer<Integer> then) {
             then.accept(remove(key));
         }
 
         @NotNull
-        private MetaNode buildMetaNode(@NotNull Key key, @NotNull String value) {
+        private MetaNode buildMetaNode(@NotNull String key, @NotNull String value) {
             return MetaNode.builder()
                     .key(key.toLowerCase()).value(value)
                     .build();
@@ -210,14 +210,14 @@ public final class MetaSession implements AutoCloseable {
         }
 
         @NotNull
-        private MetaAction buildMetaAction(@NotNull MetaAction.Type type, @NotNull Key key, int count) {
+        private MetaAction buildMetaAction(@NotNull MetaAction.Type type, @NotNull String key, int count) {
             return MetaAction.builder()
                     .type(type).key(key).count(count)
                     .build();
         }
 
         @NotNull
-        private MetaAction buildResetMetaAction(@NotNull Key key) {
+        private MetaAction buildResetMetaAction(@NotNull String key) {
             return MetaAction.builder()
                     .type(MetaAction.Type.RESET).key(key)
                     .build();
@@ -229,7 +229,7 @@ public final class MetaSession implements AutoCloseable {
 
         @NotNull
         private String zeroOrGreaterToString(int i) {
-            return i < 0 ? "0" : Integer.toString(i);
+            return i < 0 ? ZERO : Integer.toString(i);
         }
     }
 }

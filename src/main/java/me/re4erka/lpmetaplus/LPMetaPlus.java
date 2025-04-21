@@ -72,16 +72,13 @@ public final class LPMetaPlus extends BasePlugin<LPMetaPlus> {
         final Path dataFolder = getDataFolder().toPath();
         this.settings = YamlConfigurations.update(
                 dataFolder.resolve("config.yml"),
-                Settings.class, properties
-        );
+                Settings.class, properties);
         this.messages = YamlConfigurations.update(
                 dataFolder.resolve("messages.yml"),
-                Messages.class, properties
-        );
+                Messages.class, properties);
         this.metas = YamlConfigurations.update(
                 dataFolder.resolve("metas.yml"),
-                ConfigurationMetas.class, properties
-        );
+                ConfigurationMetas.class, properties);
     }
 
     @Override
@@ -100,21 +97,14 @@ public final class LPMetaPlus extends BasePlugin<LPMetaPlus> {
         manager.registerMessage(BukkitMessageKey.NO_PERMISSION,
                 (sender, context) -> messages.noPermission().send(sender));
 
-        manager.registerSuggestion(
-                SuggestionKey.of("meta_types"),
-                (sender, argument) -> metas.names()
-        );
-        manager.registerSuggestion(
-                SuggestionKey.of("any_count"),
-                (sender, argument) -> Lists.newArrayList("1", "10", "50", "100")
-        );
-        manager.registerSuggestion(
-                SuggestionKey.of("loaded_user_names"),
+        manager.registerSuggestion(SuggestionKey.of("meta_types"), (sender, argument) -> metas.keys());
+        manager.registerSuggestion(SuggestionKey.of("any_count"),
+                (sender, argument) -> Lists.newArrayList("1", "10", "50", "100"));
+        manager.registerSuggestion(SuggestionKey.of("loaded_user_names"),
                 (sender, argument) -> LuckPermsProvider.get().getUserManager()
                         .getLoadedUsers().stream()
                         .map(PermissionHolder::getFriendlyName)
-                        .collect(Collectors.toList())
-        );
+                        .collect(Collectors.toList()));
 
         manager.registerCommand(new MainCommand(this));
         metas.types().entrySet().stream()

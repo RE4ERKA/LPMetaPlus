@@ -5,7 +5,6 @@ import me.re4erka.lpmetaplus.LPMetaPlus;
 import me.re4erka.lpmetaplus.command.MetaCommand;
 import me.re4erka.lpmetaplus.configuration.type.CustomMeta;
 import me.re4erka.lpmetaplus.manager.type.MetaManager;
-import me.re4erka.lpmetaplus.util.Key;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +13,7 @@ public class CustomCommand extends MetaCommand {
 
     private final MetaManager metaManager;
 
-    private final Key key;
+    private final String type;
     private final CustomMeta meta;
 
     private final String permission;
@@ -24,7 +23,7 @@ public class CustomCommand extends MetaCommand {
         super(lpMetaPlus, type, meta.command().alias());
         this.metaManager = lpMetaPlus.getMetaManager();
 
-        this.key = Key.of(type);
+        this.type = type;
         this.meta = meta;
 
         this.permission = meta.command().permission();
@@ -37,7 +36,7 @@ public class CustomCommand extends MetaCommand {
             return;
         }
 
-        final int count = metaManager.getUser(player).get(key);
+        final int count = metaManager.getUser(player).get(type);
         meta.command().message().send(player, buildPlaceholders(meta, count));
     }
 }

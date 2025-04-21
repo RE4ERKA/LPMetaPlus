@@ -49,8 +49,7 @@ public final class Formatter {
     @NotNull
     public String strip(@NotNull String input) {
         return ChatColor.stripColor(
-                format(input)
-        );
+                format(input));
     }
 
     private boolean isColorCode(char c) {

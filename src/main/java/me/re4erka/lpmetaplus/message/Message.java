@@ -11,14 +11,14 @@ public final class Message {
 
     private final String text;
 
-    private static final Message EMPTY = Message.of(StringUtils.EMPTY);
+    private static final Message EMPTY = of(StringUtils.EMPTY);
 
     private Message(@NotNull String text) {
         this.text = text;
     }
 
     public void send(@NotNull CommandSender sender) {
-        if (text.isEmpty()) {
+        if (isEmpty()) {
             return;
         }
 
@@ -26,7 +26,7 @@ public final class Message {
     }
 
     public void send(@NotNull CommandSender sender, @NotNull Placeholders placeholders) {
-        if (text.isEmpty()) {
+        if (isEmpty()) {
             return;
         }
 

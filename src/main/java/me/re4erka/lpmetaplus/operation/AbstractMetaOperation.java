@@ -22,7 +22,7 @@ public abstract class AbstractMetaOperation implements MetaOperation {
     }
 
     protected void ifMetaPresent(@NotNull MetaOperationContext context, @NotNull Consumer<CustomMeta> action) {
-        final Optional<CustomMeta> optionalMeta = lpMetaPlus.metas().type(context.type());
+        final Optional<CustomMeta> optionalMeta = lpMetaPlus.metas().get(context.type());
         if (!optionalMeta.isPresent()) {
             lpMetaPlus.messages().meta().notFound().send(context.sender());
             return;

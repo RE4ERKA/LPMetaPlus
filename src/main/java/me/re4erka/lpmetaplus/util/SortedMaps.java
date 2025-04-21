@@ -52,8 +52,7 @@ public final class SortedMaps {
                                      @NotNull K key3, @NotNull V value3, @NotNull K key4, @NotNull V value4,
                                      @NotNull K key5, @NotNull V value5, @NotNull K key6, @NotNull V value6) {
         return unmodifiableSortedMap(
-                createMap(key1, value1, key2, value2, key3, value3, key4, value4, key5, value5, key6, value6)
-        );
+                createMap(key1, value1, key2, value2, key3, value3, key4, value4, key5, value5, key6, value6));
     }
 
     @NotNull
@@ -63,8 +62,7 @@ public final class SortedMaps {
                                      @NotNull K key5, @NotNull V value5, @NotNull K key6, @NotNull V value6,
                                      @NotNull K key7, @NotNull V value7) {
         return unmodifiableSortedMap(
-                createMap(key1, value1, key2, value2, key3, value3, key4, value4, key5, value5, key6, value6, key7, value7)
-        );
+                createMap(key1, value1, key2, value2, key3, value3, key4, value4, key5, value5, key6, value6, key7, value7));
     }
 
     @NotNull
@@ -75,8 +73,7 @@ public final class SortedMaps {
                                      @NotNull K key7, @NotNull V value7, @NotNull K key8, @NotNull V value8) {
         return unmodifiableSortedMap(
                 createMap(key1, value1, key2, value2, key3, value3, key4, value4, key5, value5, key6,
-                        value6, key7, value7, key8, value8)
-        );
+                        value6, key7, value7, key8, value8));
     }
 
     @NotNull
@@ -88,8 +85,7 @@ public final class SortedMaps {
                                      @NotNull K key9, @NotNull V value9) {
         return unmodifiableSortedMap(
                 createMap(key1, value1, key2, value2, key3, value3, key4, value4, key5, value5, key6,
-                        value6, key7, value7, key8, value8, key9, value9)
-        );
+                        value6, key7, value7, key8, value8, key9, value9));
     }
 
     @NotNull
@@ -115,7 +111,7 @@ public final class SortedMaps {
     @Unmodifiable
     private <K, V> TreeMap<K, V> createMap(@NotNull Object... keyValues) {
         if (keyValues.length % 2 != 0) {
-            throw new IllegalArgumentException("Odd number of arguments passed. Key-value pairs expected.");
+            throw new IllegalArgumentException("Odd number of arguments passed. Key-value pairs expected");
         }
 
         @SuppressWarnings("SortedCollectionWithNonComparableKeys")

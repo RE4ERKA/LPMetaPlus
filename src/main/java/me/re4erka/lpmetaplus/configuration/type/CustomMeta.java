@@ -42,8 +42,7 @@ public final class CustomMeta implements PlaceholderProvider {
     @NotNull
     public Map<String, String> defaultContexts() {
         return defaultContexts == null
-                ? Collections.emptyMap()
-                : defaultContexts;
+                ? Collections.emptyMap() : defaultContexts;
     }
 
     public boolean isCommandEnabled() {
@@ -51,7 +50,7 @@ public final class CustomMeta implements PlaceholderProvider {
     }
 
     @Override
-    public Placeholders.Builder builderPlaceholders() {
+    public Placeholders.Builder placeholdersBuilder() {
         return Placeholders.builder()
                 .add("display_name", displayName)
                 .add("default_value", defaultValue)

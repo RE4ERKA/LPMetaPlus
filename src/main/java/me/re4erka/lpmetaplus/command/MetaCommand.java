@@ -5,7 +5,6 @@ import me.re4erka.lpmetaplus.LPMetaPlus;
 import me.re4erka.lpmetaplus.Messages;
 import me.re4erka.lpmetaplus.configuration.type.CustomMeta;
 import me.re4erka.lpmetaplus.message.placeholder.Placeholders;
-import me.re4erka.lpmetaplus.util.UnsignedInts;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,7 +24,7 @@ public abstract class MetaCommand extends BaseCommand {
     }
 
     protected void ifNotUnsigned(@NotNull CommandSender sender, int count, @NotNull Runnable action) {
-        if (UnsignedInts.isNot(count)) {
+        if (isUnsigned(count)) {
             metaMessages().unsignedNotSupported().send(sender);
             return;
         }
@@ -57,7 +56,7 @@ public abstract class MetaCommand extends BaseCommand {
 
     @NotNull
     protected Placeholders buildPlaceholders(@NotNull String target, @NotNull CustomMeta meta) {
-        return meta.builderPlaceholders()
+        return meta.placeholdersBuilder()
                 .add("target", target)
                 .build();
     }
@@ -69,7 +68,11 @@ public abstract class MetaCommand extends BaseCommand {
 
     @NotNull
     private Placeholders.Builder builderPlaceholders(@NotNull CustomMeta meta, int balance) {
-        return meta.builderPlaceholders()
+        return meta.placeholdersBuilder()
                 .add("balance", balance);
+    }
+
+    private boolean isUnsigned(int count) {
+        return count < 0;
     }
 }

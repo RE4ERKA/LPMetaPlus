@@ -21,7 +21,7 @@ public class ReturnedMetaOperation extends AbstractMetaOperation {
     @Override
     public void execute(@NotNull MetaOperationContext context, boolean silent) {
         ifMetaPresent(context, meta -> lpMetaPlus.getMetaManager().findUser(context.target())
-                .thenApply(session -> tryRunOperationAndReturn(session, () -> session.get(context.typeToKey())))
+                .thenApply(session -> tryRunOperationAndReturn(session, () -> session.get(context.type())))
                 .thenAccept(count -> runIfNotSilent(() -> thenAction.accept(meta, count), silent))
                 .exceptionally(throwable -> throwException(context, throwable)));
     }

@@ -16,19 +16,19 @@ public class MigrationResult implements UniPlaceholderProvider<MigrationType> {
     private final int playersMigrated;
     private final long tookToMillis;
 
-    public boolean isFailed() {
+    public boolean isError() {
         return playersMigrated == 0;
     }
 
     @Override
-    public Placeholders.Builder builderPlaceholders(@NotNull MigrationType type) {
+    public Placeholders.Builder placeholdersBuilder(@NotNull MigrationType type) {
         return Placeholders.builder()
                 .add("count", playersMigrated)
                 .add("took", tookToMillis)
                 .add("name", type.name());
     }
 
-    public static MigrationResult failure(long millis) {
+    public static MigrationResult error(long millis) {
         return new MigrationResult(0, millis);
     }
 }

@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import me.re4erka.lpmetaplus.configuration.type.CustomMeta;
 import me.re4erka.lpmetaplus.message.Message;
-import me.re4erka.lpmetaplus.util.Key;
 import me.re4erka.lpmetaplus.util.SortedMaps;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.*;
@@ -50,35 +50,25 @@ public final class ConfigurationMetas {
     );
 
     @NotNull
-    public Optional<CustomMeta> type(@NotNull String type) {
-        return Optional.ofNullable(types.get(
-                type.toUpperCase(Locale.ROOT)
-        ));
+    public Optional<CustomMeta> get(@NotNull String type) {
+        return Optional.ofNullable(
+                getIfPresent(type));
     }
 
-    @NotNull
-    public CustomMeta type(@NotNull Key key) {
-        return types.get(key.toString());
+    @Nullable
+    public CustomMeta getIfPresent(@NotNull String type) {
+        final String key = type.toUpperCase(Locale.ROOT);
+        return types.get(key);
     }
 
-    public Key getOrThrow(@NotNull String type) {
-        final Key key = Key.of(type);
-        if (contains(key)) {
-            return key;
-        }
-
-        throw new IllegalArgumentException("The type of meta was not found!");
-    }
-
-    public boolean contains(@NotNull Key key) {
-        return types.containsKey(key.toString());
+    public boolean contains(@NotNull String key) {
+        return types.containsKey(key);
     }
 
     @NotNull
     @Unmodifiable
-    public List<String> names() {
+    public List<String> keys() {
         return Collections.unmodifiableList(
-                new ArrayList<>(types.keySet())
-        );
+                new ArrayList<>(types.keySet()));
     }
 }

@@ -7,7 +7,6 @@ import me.re4erka.lpmetaplus.formatting.CurrencyFormatter;
 import me.re4erka.lpmetaplus.manager.type.MetaManager;
 import me.re4erka.lpmetaplus.session.MetaSession;
 import me.re4erka.lpmetaplus.util.Formatter;
-import me.re4erka.lpmetaplus.util.Key;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -61,32 +60,33 @@ public class MetaPlaceholder extends PlaceholderExpansion {
         return true;
     }
 
-    @Override
     @Nullable
-    public String onRequest(OfflinePlayer player, @NotNull String rawParams) {
-        if (player == null || !player.isOnline() || player.getPlayer() == null) {
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public String onRequest(@Nullable OfflinePlayer player, @NotNull String rawParams) {
+        if (player == null || !player.isOnline()) {
             return PLAYER_NOT_ONLINE;
         }
 
         final String[] params = convert(rawParams);
-        final Key key = Key.of(params[0]);
+        final String type = params[0].toUpperCase(Locale.ROOT);
 
-        if (!lpMetaPlus.metas().contains(key)) {
+        if (!lpMetaPlus.metas().contains(type)) {
             return META_NOT_FOUND;
         }
 
         if (params.length == 1) {
             try (MetaSession session = metaManager.getUser(player)) {
-                return session.getAsString(key);
+                return session.getAsString(type);
             }
         }
 
-        final CustomMeta meta = lpMetaPlus.metas().type(key);
+        final CustomMeta meta = lpMetaPlus.metas().getIfPresent(type);
         switch (params.length) {
             case 2: {
                 if (params[1].equals("formatted")) {
                     try (MetaSession session = metaManager.getUser(player)) {
-                        return currencyFormatter.format(session.get(key), meta.symbol());
+                        return currencyFormatter.format(session.get(type), meta.symbol());
                     }
                 } else if (params[1].equals("symbol")) {
                     return meta.symbol() == null ? EMPTY_SYMBOL : Character.toString(meta.symbol());
@@ -95,7 +95,7 @@ public class MetaPlaceholder extends PlaceholderExpansion {
             case 3: {
                 if (params[1].equals("with") && params[2].equals("symbol")) {
                     try (MetaSession session = metaManager.getUser(player)) {
-                        return session.getAsString(key) + meta.symbol();
+                        return session.getAsString(type) + meta.symbol();
                     }
                 } else if (params[1].equals("display") && params[2].equals("name")) {
                     return meta.displayName() == null ? EMPTY_DISPLAY_NAME : Formatter.format(meta.displayName());

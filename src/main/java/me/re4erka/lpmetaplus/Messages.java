@@ -24,11 +24,16 @@ public final class Messages {
     @Configuration
     public static final class Meta {
 
-        private Message get = Message.of("&fУ игрока &6%target% &fмета-данной &r%display_name% &fв количестве&8: &e%balance% %symbol%");
-        private Message set = Message.of("&fИгроку &6%target% &fбыло установлено мета-данной &r%display_name%&8: &e%balance% %symbol%");
-        private Message given = Message.of("&fИгроку &6%target% &fбыла выдана мета-данная &r%display_name%&8: &e%balance% %symbol%");
-        private Message taken = Message.of("&fИгроку &6%target% &fбыло отнято мета-данных &r%display_name%&8: &e%balance% %symbol%");
-        private Message reset = Message.of("&fИгроку &6%target% &fбыл сброшен баланс мета-данной &r%display_name%&f!");
+        private Message get = Message.of("&fУ игрока &6%target% "
+                + "&fмета-данной &r%display_name% &fв количестве&8: &e%balance% %symbol%");
+        private Message set = Message.of("&fИгроку &6%target% &fбыло установлено "
+                + "мета-данной &r%display_name%&8: &e%balance% %symbol%");
+        private Message given = Message.of("&fИгроку &6%target% &fбыла выдана "
+                + "мета-данная &r%display_name%&8: &e%balance% %symbol%");
+        private Message taken = Message.of("&fИгроку &6%target% &fбыло отнято "
+                + "мета-данных &r%display_name%&8: &e%balance% %symbol%");
+        private Message reset = Message.of("&fИгроку &6%target% &fбыл сброшен баланс "
+                + "мета-данной &r%display_name%&f!");
 
         private Message notFound = Message.of("&fВведенная вами мета-данная &cне была найдена&f!");
         private Message unsignedNotSupported = Message.of("&fБеззнаковые значения &cне поддерживаются&f!");
@@ -56,8 +61,7 @@ public final class Messages {
                 Message.of("&8- &e/lpmetaplus set &f<тип> <количество> <ник> &7(-silent)"),
                 Message.of("&8- &e/lpmetaplus take &f<тип> <количество> <ник> &7(-silent)"),
                 Message.of("&8- &e/lpmetaplus give &f<тип> <количество> <ник> &7(-silent)"),
-                Message.of("&8- &e/lpmetaplus reload")
-        );
+                Message.of("&8- &e/lpmetaplus reload"));
     }
 
     private Migration migration = new Migration();

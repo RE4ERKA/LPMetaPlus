@@ -68,17 +68,15 @@ public class PlayerPointsMigrator extends Migrator {
                             migrateAll(migrationDataSet);
                             stopwatch.stop();
 
-                            return MigrationResult.success(
-                                    migrationDataSet.size(),
-                                    stopwatch.elapsed(TimeUnit.MILLISECONDS)
-                            );
+                            return MigrationResult.success(migrationDataSet.size(),
+                                    stopwatch.elapsed(TimeUnit.MILLISECONDS));
                         }
                     }
                 }
             } catch (Throwable exception) {
                 lpMetaPlus.logError("An error occurred when migrating from " + name + " with " + type.name() + ". "
                         + "The connection credentials may have been entered incorrectly.", exception);
-                return MigrationResult.failure(stopwatch.elapsed(TimeUnit.MILLISECONDS));
+                return MigrationResult.error(stopwatch.elapsed(TimeUnit.MILLISECONDS));
             }
         });
     }

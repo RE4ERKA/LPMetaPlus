@@ -114,7 +114,7 @@ public class MainCommand extends MetaCommand {
         migrationType.initialize(lpMetaPlus)
                 .migrate(databaseType)
                 .thenAccept(result -> {
-                    if (result.isFailed()) {
+                    if (result.isError()) {
                         migrationMessages().failed().send(sender, result.toPlaceholders(migrationType));
                     } else {
                         migrationMessages().successfully().send(sender, result.toPlaceholders(migrationType));

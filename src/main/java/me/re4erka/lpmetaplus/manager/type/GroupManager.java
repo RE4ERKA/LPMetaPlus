@@ -32,7 +32,7 @@ public class GroupManager extends LuckPermsProviderManager {
                 .thenAccept(optionalGroup -> {
                     final Group group = optionalGroup.orElseThrow(this::throwGroupNotFound);
                     loadDefaultGroupValues(group, metas.types());
-                    clearRemovedMetadata(group, metas.names());
+                    clearRemovedMetadata(group, metas.types().keySet());
 
                     groupManager.saveGroup(group);
                 }).join();
@@ -58,7 +58,7 @@ public class GroupManager extends LuckPermsProviderManager {
         }
     }
 
-    private void clearRemovedMetadata(@NotNull Group group, @NotNull List<String> names) {
+    private void clearRemovedMetadata(@NotNull Group group, @NotNull Set<String> names) {
         final Set<MetaNode> nodes = group.getNodes(NodeType.META).stream()
                 .filter(node -> node.getContexts().contains(CONTEXT_KEY, Boolean.TRUE.toString()))
                 .filter(node -> !names.contains(node.getMetaKey().toUpperCase(Locale.ROOT)))

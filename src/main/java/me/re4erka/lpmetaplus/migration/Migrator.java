@@ -6,7 +6,6 @@ import me.re4erka.lpmetaplus.manager.type.MetaManager;
 import me.re4erka.lpmetaplus.migration.data.MigrationData;
 import me.re4erka.lpmetaplus.migration.result.MigrationResult;
 import me.re4erka.lpmetaplus.session.MetaSession;
-import me.re4erka.lpmetaplus.util.Key;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Blocking;
@@ -24,7 +23,7 @@ public abstract class Migrator {
     protected final String name;
     protected final Plugin plugin;
 
-    protected final Key defaultType;
+    protected final String defaultType;
     protected final Settings.Migration.Credentials credentials;
 
     protected static final String MIGRATION_POOL_NAME = "lpmetaplus_migration_pool";
@@ -38,7 +37,8 @@ public abstract class Migrator {
         throwIfPluginIsNull(plugin);
 
         final Settings.Migration migration = lpMetaPlus.settings().migration();
-        this.defaultType = lpMetaPlus.metas().getOrThrow(migration.defaultType());
+        throwIfTypeNotFound(migration.defaultType());
+        this.defaultType = migration.defaultType();
         this.credentials = migration.credentials();
     }
 
@@ -69,7 +69,13 @@ public abstract class Migrator {
         if (plugin == null) {
             lpMetaPlus.logError(name + " plugin was not found! It may be disabled or not installed, "
                     + "but it is required to migrate.");
-            throw new NullPointerException("The plugin cannot be null!");
+            throw new NullPointerException("The plugin cannot be null");
+        }
+    }
+
+    private void throwIfTypeNotFound(@NotNull String type) {
+        if (!lpMetaPlus.metas().contains(type)) {
+            throw new IllegalArgumentException("The type of meta was not found");
         }
     }
 
