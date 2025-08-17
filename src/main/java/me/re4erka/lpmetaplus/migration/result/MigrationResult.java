@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import me.re4erka.lpmetaplus.message.placeholder.Placeholders;
 import me.re4erka.lpmetaplus.migration.MigrationType;
-import me.re4erka.lpmetaplus.placeholder.provider.UniPlaceholderProvider;
+import me.re4erka.lpmetaplus.message.placeholder.provider.UniPlaceholderProvider;
 import org.jetbrains.annotations.NotNull;
 
 @Getter

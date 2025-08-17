@@ -69,7 +69,7 @@ public abstract class Migrator {
         if (plugin == null) {
             lpMetaPlus.logError(name + " plugin was not found! It may be disabled or not installed, "
                     + "but it is required to migrate.");
-            throw new NullPointerException("The plugin cannot be null");
+            throw new NullPointerException("The plugin must not be null");
         }
     }
 

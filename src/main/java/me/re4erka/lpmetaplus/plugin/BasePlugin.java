@@ -24,10 +24,7 @@ public abstract class BasePlugin<P extends LPMetaPlus> extends JavaPlugin {
         LPMetaPlusAPI.unregister();
     }
 
-    public void reload() {
-        loadConfigurations();
-    }
-
+    public abstract void reload();
     public abstract void enable();
 
     public void logInfo(@NotNull String message) {

@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 import me.re4erka.lpmetaplus.message.Message;
 import me.re4erka.lpmetaplus.message.placeholder.Placeholders;
-import me.re4erka.lpmetaplus.placeholder.provider.PlaceholderProvider;
+import me.re4erka.lpmetaplus.message.placeholder.provider.PlaceholderProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -72,7 +72,7 @@ public class GroupManager extends LuckPermsProviderManager {
 
     @NotNull
     private RuntimeException throwGroupNotFound() {
-        return new IllegalStateException("Group 'default' cannot be null!");
+        return new IllegalStateException("Group default must not be null");
     }
 
     @NotNull

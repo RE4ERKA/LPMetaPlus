@@ -48,7 +48,7 @@ public final class LPMetaPlus extends BasePlugin<LPMetaPlus> {
     public void enable() {
         initialize("MetaManager", plugin -> this.metaManager = new MetaManager(plugin));
         initialize("GroupManager", plugin -> this.groupManager = new GroupManager(plugin));
-        initialize("CurrencyFormatter", plugin -> this.currencyFormatter = new CurrencyFormatter(plugin));
+        initialize("CurrencyFormatter", ignored -> loadCurrencyFormatter());
         initialize("MetaPlaceholder", plugin -> {
             if (isSupportPlaceholderAPI()) {
                 new MetaPlaceholder(plugin).register();
@@ -59,6 +59,12 @@ public final class LPMetaPlus extends BasePlugin<LPMetaPlus> {
 
         groupManager.load(metas);
         metaManager.registerWarningEvents();
+    }
+
+    @Override
+    public void reload() {
+        loadConfigurations();
+        loadCurrencyFormatter();
     }
 
     @Override
@@ -117,5 +123,9 @@ public final class LPMetaPlus extends BasePlugin<LPMetaPlus> {
     @Override
     protected LPMetaPlus self() {
         return this;
+    }
+
+    private void loadCurrencyFormatter() {
+        this.currencyFormatter = new CurrencyFormatter(this);
     }
 }

@@ -5,6 +5,7 @@ import me.re4erka.lpmetaplus.LPMetaPlus;
 import me.re4erka.lpmetaplus.action.MetaAction;
 import net.luckperms.api.actionlog.Action;
 import net.luckperms.api.actionlog.ActionLogger;
+import net.luckperms.api.model.PermissionHolder;
 import net.luckperms.api.model.data.DataType;
 import net.luckperms.api.model.data.NodeMap;
 import net.luckperms.api.model.group.Group;
@@ -78,7 +79,7 @@ public final class MetaSession implements AutoCloseable {
 
     @NotNull
     private MetaNode getFirst(@NotNull String key) {
-        return metas().stream()
+        return metas(user).stream()
                 .filter(node -> isEquals(node, key))
                 .findFirst()
                 .orElse(getFirstFromDefaultGroup(key));
@@ -87,15 +88,15 @@ public final class MetaSession implements AutoCloseable {
     @NotNull
     @SuppressWarnings("ConstantConditions")
     private MetaNode getFirstFromDefaultGroup(@NotNull String key) {
-        return defaultGroup.getNodes(NodeType.META).stream()
+        return metas(defaultGroup).stream()
                 .filter(node -> isEquals(node, key))
                 .findFirst()
                 .orElseThrow(() -> throwMetaNotFound(key));
     }
 
     @NotNull
-    private Collection<MetaNode> metas() {
-        return user.getNodes(NodeType.META);
+    private Collection<MetaNode> metas(@NotNull PermissionHolder holder) {
+        return holder.getNodes(NodeType.META);
     }
 
     private boolean isEquals(@NotNull MetaNode node, @NotNull String key) {
@@ -139,7 +140,7 @@ public final class MetaSession implements AutoCloseable {
         lpMetaPlus.logError("When trying to find meta for a user, it was not found. "
                 + "This meta may have been unset/cleared from the 'default' group, "
                 + "please restart the plugin or return the meta: '" + key + "'");
-        return new IllegalStateException("MetaNode cannot be null!");
+        return new IllegalStateException("MetaNode must not be null");
     }
 
     public final class Editor {

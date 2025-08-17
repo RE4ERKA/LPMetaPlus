@@ -133,7 +133,7 @@ public class MetaManager extends LuckPermsProviderManager {
         if (group == null) {
             lpMetaPlus.logError("When trying to get the default group, a null was get, " +
                     "which should not be the case.");
-            throw new IllegalStateException("Default group cannot be null");
+            throw new IllegalStateException("Default group must not be null");
         }
     }
 
@@ -142,7 +142,7 @@ public class MetaManager extends LuckPermsProviderManager {
             lpMetaPlus.logError("An error occurred when trying to get a user by UUID. " +
                     "The method being called assumes that the player being retrieved will be online, " +
                     "maybe the problem is related to this");
-            throw new NullPointerException("A user cannot be null!");
+            throw new NullPointerException("A user must not be null");
         }
     }
 }

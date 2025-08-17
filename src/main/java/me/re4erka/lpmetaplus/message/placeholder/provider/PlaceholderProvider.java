@@ -1,4 +1,4 @@
-package me.re4erka.lpmetaplus.placeholder.provider;
+package me.re4erka.lpmetaplus.message.placeholder.provider;
 
 import me.re4erka.lpmetaplus.message.placeholder.Placeholders;
 

@@ -16,6 +16,17 @@ public final class Placeholders {
     }
 
     @NotNull
+    public static Placeholders single(@NotNull String search, @NotNull String replacement) {
+        return new Placeholders(Collections.unmodifiableSet(
+                Sets.newHashSet(Placeholder.of(search, replacement))));
+    }
+
+    @NotNull
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    @NotNull
     public String process(@NotNull String text) {
         String processedText = text;
         for (Placeholder placeholder : placeholders) {
@@ -23,17 +34,6 @@ public final class Placeholders {
         }
 
         return processedText;
-    }
-
-    @NotNull
-    public static Placeholders single(@NotNull String search, @NotNull String replacement) {
-        return new Placeholders(Collections.unmodifiableSet(
-                        Sets.newHashSet(Placeholder.of(search, replacement))));
-    }
-
-    @NotNull
-    public static Builder builder() {
-        return new Builder();
     }
 
     public static class Builder {

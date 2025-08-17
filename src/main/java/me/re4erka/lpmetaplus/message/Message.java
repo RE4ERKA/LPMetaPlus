@@ -17,6 +17,16 @@ public final class Message {
         this.text = text;
     }
 
+    @NotNull
+    public static Message of(@NotNull String text) {
+        return new Message(text);
+    }
+
+    @NotNull
+    public static Message empty() {
+        return EMPTY;
+    }
+
     public void send(@NotNull CommandSender sender) {
         if (isEmpty()) {
             return;
@@ -43,16 +53,6 @@ public final class Message {
 
     private boolean isConsoleSender(@NotNull CommandSender sender) {
         return Bukkit.getConsoleSender() == sender;
-    }
-
-    @NotNull
-    public static Message of(@NotNull String text) {
-        return new Message(text);
-    }
-
-    @NotNull
-    public static Message empty() {
-        return EMPTY;
     }
 
     public static class Serializer implements de.exlll.configlib.Serializer<Message, String> {

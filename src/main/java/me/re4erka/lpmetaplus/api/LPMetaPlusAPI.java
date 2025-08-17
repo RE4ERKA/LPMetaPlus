@@ -22,6 +22,25 @@ public class LPMetaPlusAPI {
     }
 
     @NotNull
+    public static LPMetaPlusAPI getInstance() throws NotRegisteredException {
+        if (instance == null) {
+            throw new NotRegisteredException();
+        }
+
+        return instance;
+    }
+
+    @ApiStatus.Internal
+    public static void register(@NotNull LPMetaPlus plugin) {
+        instance = new LPMetaPlusAPI(plugin);
+    }
+
+    @ApiStatus.Internal
+    public static void unregister() {
+        instance = null;
+    }
+
+    @NotNull
     public MetaSession openSession(@NotNull Player player) {
         return plugin.getMetaManager().getUser(player);
     }
@@ -62,31 +81,12 @@ public class LPMetaPlusAPI {
     public void take(@NotNull Player player, @NotNull String key, @Range(from = 0, to = Integer.MAX_VALUE) int balance,
                      boolean silent) {
         try (MetaSession session = openSession(player)) {
-            session.edit(editor -> editor.give(key, balance), silent);
+            session.edit(editor -> editor.take(key, balance), silent);
         }
     }
 
     public void take(@NotNull Player player, @NotNull String key, @Range(from = 0, to = Integer.MAX_VALUE) int balance) {
         take(player, key, balance, false);
-    }
-
-    @NotNull
-    public static LPMetaPlusAPI getInstance() throws NotRegisteredException {
-        if (instance == null) {
-            throw new NotRegisteredException();
-        }
-
-        return instance;
-    }
-
-    @ApiStatus.Internal
-    public static void register(@NotNull LPMetaPlus plugin) {
-        instance = new LPMetaPlusAPI(plugin);
-    }
-
-    @ApiStatus.Internal
-    public static void unregister() {
-        instance = null;
     }
 
     public static final class NotRegisteredException extends IllegalStateException {
